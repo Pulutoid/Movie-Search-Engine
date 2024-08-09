@@ -53,33 +53,39 @@
 
     <!-- Advanced Search Filters -->
     <form action="/search" method="GET" class="filter-section">
-      <!-- Genre Buttons -->
+      <!-- Genre Checkboxes -->
       <div class="mb-4">
         <h4>Select Genres</h4>
         <div class="btn-group">
           <label>
-            <input type="checkbox" name="genres" value="Animation"> Animation
+            <input type="checkbox" name="genres" value="Short" /> Short
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Action"> Action
+            <input type="checkbox" name="genres" value="Animation" /> Animation
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Comedy"> Comedy
+            <input type="checkbox" name="genres" value="Documentary" /> Documentary
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Drama"> Drama
+            <input type="checkbox" name="genres" value="Comedy" /> Comedy
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Horror"> Horror
+            <input type="checkbox" name="genres" value="Drama" /> Drama
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Romance"> Romance
+            <input type="checkbox" name="genres" value="Action" /> Action
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Sci-Fi"> Sci-Fi
+            <input type="checkbox" name="genres" value="Horror" /> Horror
           </label>
           <label>
-            <input type="checkbox" name="genres" value="Thriller"> Thriller
+            <input type="checkbox" name="genres" value="Sci-Fi" /> Sci-Fi
+          </label>
+          <label>
+            <input type="checkbox" name="genres" value="Romance" /> Romance
+          </label>
+          <label>
+            <input type="checkbox" name="genres" value="Thriller" /> Thriller
           </label>
         </div>
       </div>
@@ -97,19 +103,15 @@
       <div class="mb-4">
         <h4>Select IMDb Rating</h4>
         <div class="btn-group">
-          <label>
-            <input type="radio" name="minRating" value="7"> 7-10
-          </label>
-          <label>
-            <input type="radio" name="minRating" value="5"> 5-7
-          </label>
-          <label>
-            <input type="radio" name="minRating" value="0"> 0-5
-          </label>
+          <button class="btn filter-btn" type="button" onclick="setRating(7, 10)">7-10</button>
+          <button class="btn filter-btn" type="button" onclick="setRating(5, 7)">5-7</button>
+          <button class="btn filter-btn" type="button" onclick="setRating(0, 5)">0-5</button>
         </div>
+        <input type="hidden" name="minRating" id="minRating" />
+        <input type="hidden" name="maxRating" id="maxRating" />
       </div>
 
-      <!-- Other Attribute Buttons -->
+      <!-- Other Attribute Inputs -->
       <div class="mb-4">
         <h4>Select Other Attributes</h4>
         <div class="btn-group">
@@ -142,15 +144,26 @@
     <!-- Pagination Controls -->
     <div class="pagination">
       {% if page > 1 %}
-      <a href="/?page={{ page - 1 }}" class="pagination-prev">Previous</a>
+      <a href="?{% for key, value in query %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page - 1 }}"
+        class="pagination-prev">Previous</a>
       {% endif %}
 
       <span>Page {{ page }} of {{ totalPages }}</span>
 
-      {% if page < totalPages %} <a href="/?page={{ page + 1 }}" class="pagination-next">Next</a>
+      {% if page < totalPages %} <a
+        href="?{% for key, value in query %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page + 1 }}"
+        class="pagination-next">Next</a>
         {% endif %}
     </div>
   </div>
+
+  <script>
+    // Set the rating filters
+    function setRating(min, max) {
+      document.getElementById('minRating').value = min;
+      document.getElementById('maxRating').value = max;
+    }
+  </script>
 </body>
 
 </html>

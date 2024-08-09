@@ -17,7 +17,7 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
   const db = await openConnectionToDB(); // Open database connection
 
   // Initialize query and parameters array
-  let query = 'SELECT * FROM MovRec_movie WHERE 1=1'; // Basic query selecting from the movies table
+  let query = 'SELECT * FROM MovRec_movie WHERE 1=1';
   let params = [];
 
   // Add title condition for partial or full match
@@ -26,12 +26,20 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
     params.push(`%${title}%`);
   }
 
-  // Add conditions based on the provided filters
+  // Ensure genres is always treated as an array
   if (genres) {
-    if (!Array.isArray(genres)) genres = [genres];
-    query += ' AND (' + genres.map(() => 'genre LIKE ?').join(' OR ') + ')';
-    params.push(...genres.map(g => `%${g}%`));
+    if (typeof genres === 'string') {
+      genres = [genres]; // Convert to array if it's a string
+    }
+
+    // Add conditions to match all selected genres
+    genres.forEach((genre) => {
+      query += ' AND genre LIKE ?';
+      params.push(`%${genre}%`);
+    });
   }
+
+  // Add other conditions based on provided filters
   if (minYear) {
     query += ' AND year >= ?';
     params.push(minYear);
@@ -70,9 +78,9 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
   params.push(limit, offset);
 
   // Execute the query with parameters
-  const movieSearchResult = await db.all(query, ...params);
+  let movieSearchResult = await db.all(query, ...params);
 
-  // Set a default placeholder image URL for missing posters
+  // Set a default placeholder image URL
   const placeholderImage = 'https://via.placeholder.com/300x450?text=No+Image+Available';
 
   // Replace missing poster images with the placeholder image
@@ -82,14 +90,14 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
     }
   });
 
-  return movieSearchResult; // Return the filtered and paginated movies
+  return movieSearchResult;
 }
 
 // Count the total number of movies in the database (with optional filters)
 async function countMovies(filters = {}) {
   const db = await openConnectionToDB(); // Open database connection
 
-  // Initialize query and parameters array for counting movies
+  // Initialize query and parameters array
   let query = 'SELECT COUNT(*) as count FROM MovRec_movie WHERE 1=1';
   let params = [];
 
@@ -99,9 +107,14 @@ async function countMovies(filters = {}) {
     params.push(`%${filters.title}%`);
   }
   if (filters.genres) {
-    if (!Array.isArray(filters.genres)) filters.genres = [filters.genres];
-    query += ' AND (' + filters.genres.map(() => 'genre LIKE ?').join(' OR ') + ')';
-    params.push(...filters.genres.map(g => `%${g}%`));
+    if (typeof filters.genres === 'string') {
+      filters.genres = [filters.genres]; // Convert to array if it's a string
+    }
+
+    filters.genres.forEach((genre) => {
+      query += ' AND genre LIKE ?';
+      params.push(`%${genre}%`);
+    });
   }
   if (filters.minYear) {
     query += ' AND year >= ?';
@@ -136,7 +149,7 @@ async function countMovies(filters = {}) {
     params.push(`%${filters.language}%`);
   }
 
-  // Execute the query with parameters and return the count
+  // Execute the query with parameters
   const row = await db.get(query, ...params);
   return row.count;
 }

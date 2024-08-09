@@ -39,7 +39,7 @@ async function mainIndexHtml() {
       const totalPages = Math.ceil(totalMovies / moviesPerPage);
 
       // Render the 'index.html' template with the fetched movies and pagination data
-      res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages }));
+      res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages, query: req.query }));
     } catch (error) {
       console.error("Error fetching movies:", error);
       res.status(500).send("Internal Server Error");
@@ -50,7 +50,7 @@ async function mainIndexHtml() {
   app.get('/search', async (req, res) => {
     try {
       // Retrieve search parameters from query
-      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language } = req.query;
+      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language, page } = req.query;
 
       // Convert year filters to integers if present
       const filters = {
@@ -67,9 +67,9 @@ async function mainIndexHtml() {
       };
 
       // Calculate pagination details
-      const page = parseInt(req.query.page) || 1;
+      const currentPage = parseInt(page) || 1;
       const moviesPerPage = 100;
-      const offset = (page - 1) * moviesPerPage;
+      const offset = (currentPage - 1) * moviesPerPage;
 
       // Call searchMovies with the extracted parameters
       const movieSearchResult = await articleModel.searchMovies(filters, offset, moviesPerPage);
@@ -79,7 +79,7 @@ async function mainIndexHtml() {
       const totalPages = Math.ceil(totalMovies / moviesPerPage);
 
       // Render the 'index.html' template with the search results and pagination data
-      res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages }));
+      res.send(nunjucks.render('index.html', { movieSearchResult, page: currentPage, totalPages, query: req.query }));
     } catch (error) {
       console.error("Error fetching movies by search parameters:", error);
       res.status(500).send("Internal Server Error");
