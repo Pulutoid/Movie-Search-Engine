@@ -41,7 +41,7 @@ async function addArticle(article_data) {
   const db = await openConnectionToDB(); // Open database connection
   // Check if the article ID is free before adding the new article
   if (await returnTrueIfArticleIdIsFree(article_data.id)) {
-    // Insert the new article into the 'articles' table
+    // Insert the new article into the 'MovRec_movie' table
     const result = await db.run('INSERT INTO MovRec_movie (id, title, description, content, author, likes, arabicContent) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [article_data.id, article_data.title, article_data.description, article_data.content, article_data.author, article_data.likes, article_data.arabicContent]);
     return result; // Return the result of the insertion (metadata)
@@ -55,7 +55,7 @@ async function updateArticle(article_id, data) {
   const db = await openConnectionToDB(); // Open database connection
   // Check if the article ID exists before updating the article
   if (!await returnTrueIfArticleIdIsFree(article_id)) {
-    // Update the specified article's details in the 'articles' table
+    // Update the specified article's details in the 'MovRec_movie' table
     const result = await db.run('UPDATE MovRec_movie SET title = ?, description = ?, content = ?, author = ?, likes = ?, arabicContent = ? WHERE id = ?',
       [data.title, data.description, data.content, data.author, data.likes, data.arabicContent, article_id]);
     return result; // Return the result of the update (metadata)
