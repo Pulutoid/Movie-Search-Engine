@@ -50,7 +50,14 @@ async function mainIndexHtml() {
   app.get('/search', async (req, res) => {
     try {
       // Retrieve search parameters from query
-      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language, page } = req.query;
+      let { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language, page } = req.query;
+
+      // Ensure genres is always treated as an array
+      if (typeof genres === 'string') {
+        genres = [genres];
+      } else if (!Array.isArray(genres)) {
+        genres = [];
+      }
 
       // Convert year filters to integers if present
       const filters = {

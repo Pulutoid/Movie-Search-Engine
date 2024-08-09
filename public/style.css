@@ -1,46 +1,39 @@
-/* Existing styles from style.css */
-.user-search {
-  background-color: #1c2b1f;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-}
-
-/* ... (other existing styles) ... */
-
-/* Integrated styles from index.html */
+/* General Styles */
 body {
   background-color: #1c2c2b;
   color: #ffffff;
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px;
 }
 
+/* Search Section */
 .search-section {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .search-section input {
-  width: 400px;
-  padding: 10px;
-  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  padding: 12px;
+  border-radius: 25px;
   border: none;
   outline: none;
+  margin-bottom: 20px;
 }
 
 .search-section button {
-  margin-left: 10px;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 12px 25px;
+  border-radius: 25px;
   border: none;
   background-color: #4caf50;
   color: white;
@@ -54,53 +47,100 @@ body {
 
 h1 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   font-size: 36px;
 }
 
-.filter-section {
-  margin-bottom: 40px;
+/* Filter Group Styles */
+.filter-group {
+  margin-bottom: 30px;
+  width: 100%;
 }
 
-.filter-section h4 {
+.filter-group h4 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 24px;
 }
 
-.btn-group {
+.btn-group.vertical {
+  display: contents;
+  gap: 20px;
+}
+
+.btn-group.vertical label {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.btn-group button {
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
   margin: 5px;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: 1px solid #ffffff;
-  background-color: transparent;
-  color: #ffffff;
+  background-color: #2b3a3b;
+  border-radius: 15px;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
 }
 
-.btn-group button:hover,
-.btn-group button.active {
+/* Hide the checkbox input */
+.btn-group.vertical input[type="checkbox"] {
+  display: none;
+}
+
+/* Apply the selected class to change the background color */
+.btn-group.vertical input[type="checkbox"]:checked + label,
+.btn-group.vertical label.selected {
+  background-color: #22a827; /* Green background when selected */
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Hover effect with background color change */
+.btn-group.vertical label:hover {
   background-color: #4caf50;
-  color: #ffffff;
+  transform: scale(1.05);
 }
 
+/* Input Group Styles */
+.input-group.horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-group.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.year-input,
+.attribute-input {
+  width: calc(50% - 5px);
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ffffff;
+  background-color: #2b3a3b;
+  color: #ffffff;
+  outline: none;
+}
+
+/* Movie Grid Styles */
 .movie-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
 }
 
 .grid-item {
   width: 150px;
   margin-bottom: 20px;
   cursor: pointer;
+  position: relative;
+  display: inline-block;
 }
 
 .grid-item img {
@@ -113,11 +153,30 @@ h1 {
 .grid-item img:hover {
   transform: scale(1.05);
 }
+
+.grid-item .hover-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.grid-item:hover .hover-title {
+  opacity: 1;
+}
+
+/* Pagination Styles */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .pagination a {

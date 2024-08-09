@@ -7,122 +7,108 @@
   <link rel="stylesheet" href="globals.css" />
   <link rel="stylesheet" href="style.css" />
   <title>Movie Search</title>
-  <style>
-    /* Additional styles for enhanced filters */
-    .filter-section h4 {
-      margin-top: 20px;
-    }
-
-    .grid-item {
-      position: relative;
-      display: inline-block;
-    }
-
-    .grid-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .grid-item .hover-title {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .grid-item:hover .hover-title {
-      opacity: 1;
-    }
-  </style>
 </head>
 
 <body>
   <div class="container">
-    <!-- Search Section -->
+    <!-- Unified Search Section -->
     <form action="/search" method="GET" class="search-section">
-      <input type="text" name="title" placeholder="Search for movies..." />
-      <button type="submit">Search</button>
-    </form>
+      <input type="text" name="title" placeholder="Search for movies..." value="{{ query.title | default('') }}" />
 
-    <!-- Advanced Search Filters -->
-    <form action="/search" method="GET" class="filter-section">
       <!-- Genre Checkboxes -->
-      <div class="mb-4">
+      <div class="filter-group">
         <h4>Select Genres</h4>
-        <div class="btn-group">
-          <label>
-            <input type="checkbox" name="genres" value="Short" /> Short
+        <div class="btn-group vertical">
+          {% set selectedGenres = query.genres if query.genres else [] %}
+          {% if selectedGenres is not iterable %}
+          {% set selectedGenres = [selectedGenres] %}
+          {% endif %}
+          <label class="{% if 'Short' in selectedGenres %}selected{% endif %}">
+            Short
+            <input type="checkbox" name="genres" value="Short" {% if 'Short' in selectedGenres %}checked{% endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Animation" /> Animation
+          <label class="{% if 'Animation' in selectedGenres %}selected{% endif %}">
+            Animation
+            <input type="checkbox" name="genres" value="Animation" {% if 'Animation' in selectedGenres %}checked{% endif
+              %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Documentary" /> Documentary
+          <label class="{% if 'Documentary' in selectedGenres %}selected{% endif %}">
+            Documentary
+            <input type="checkbox" name="genres" value="Documentary" {% if 'Documentary' in selectedGenres %}checked{%
+              endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Comedy" /> Comedy
+          <label class="{% if 'Comedy' in selectedGenres %}selected{% endif %}">
+            Comedy
+            <input type="checkbox" name="genres" value="Comedy" {% if 'Comedy' in selectedGenres %}checked{% endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Drama" /> Drama
+          <label class="{% if 'Drama' in selectedGenres %}selected{% endif %}">
+            Drama
+            <input type="checkbox" name="genres" value="Drama" {% if 'Drama' in selectedGenres %}checked{% endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Action" /> Action
+          <label class="{% if 'Action' in selectedGenres %}selected{% endif %}">
+            Action
+            <input type="checkbox" name="genres" value="Action" {% if 'Action' in selectedGenres %}checked{% endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Horror" /> Horror
+          <label class="{% if 'Horror' in selectedGenres %}selected{% endif %}">
+            Horror
+            <input type="checkbox" name="genres" value="Horror" {% if 'Horror' in selectedGenres %}checked{% endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Sci-Fi" /> Sci-Fi
+          <label class="{% if 'Sci-Fi' in selectedGenres %}selected{% endif %}">
+            Sci-Fi
+            <input type="checkbox" name="genres" value="Sci-Fi" {% if 'Sci-Fi' in selectedGenres %}checked{% endif %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Romance" /> Romance
+          <label class="{% if 'Romance' in selectedGenres %}selected{% endif %}">
+            Romance
+            <input type="checkbox" name="genres" value="Romance" {% if 'Romance' in selectedGenres %}checked{% endif
+              %} />
           </label>
-          <label>
-            <input type="checkbox" name="genres" value="Thriller" /> Thriller
+          <label class="{% if 'Thriller' in selectedGenres %}selected{% endif %}">
+            Thriller
+            <input type="checkbox" name="genres" value="Thriller" {% if 'Thriller' in selectedGenres %}checked{% endif
+              %} />
           </label>
         </div>
       </div>
 
       <!-- Year Range -->
-      <div class="mb-4">
+      <div class="filter-group">
         <h4>Select Year Range</h4>
-        <div class="btn-group">
-          <input type="number" name="minYear" placeholder="Min Year" style="margin-right: 10px; padding: 10px;" />
-          <input type="number" name="maxYear" placeholder="Max Year" style="padding: 10px;" />
+        <div class="input-group horizontal">
+          <input type="number" name="minYear" placeholder="Min Year" class="year-input"
+            value="{{ query.minYear | default('') }}" />
+          <input type="number" name="maxYear" placeholder="Max Year" class="year-input"
+            value="{{ query.maxYear | default('') }}" />
         </div>
       </div>
 
       <!-- IMDb Rating Buttons -->
-      <div class="mb-4">
+      <div class="filter-group">
         <h4>Select IMDb Rating</h4>
-        <div class="btn-group">
+        <div class="btn-group horizontal">
           <button class="btn filter-btn" type="button" onclick="setRating(7, 10)">7-10</button>
           <button class="btn filter-btn" type="button" onclick="setRating(5, 7)">5-7</button>
           <button class="btn filter-btn" type="button" onclick="setRating(0, 5)">0-5</button>
         </div>
-        <input type="hidden" name="minRating" id="minRating" />
-        <input type="hidden" name="maxRating" id="maxRating" />
+        <input type="hidden" name="minRating" id="minRating" value="{{ query.minRating | default('') }}" />
+        <input type="hidden" name="maxRating" id="maxRating" value="{{ query.maxRating | default('') }}" />
       </div>
 
       <!-- Other Attribute Inputs -->
-      <div class="mb-4">
+      <div class="filter-group">
         <h4>Select Other Attributes</h4>
-        <div class="btn-group">
-          <input type="text" name="director" placeholder="Director Name" style="margin-right: 10px; padding: 10px;" />
-          <input type="text" name="cast" placeholder="Cast Member" style="margin-right: 10px; padding: 10px;" />
-          <input type="text" name="country" placeholder="Country" style="margin-right: 10px; padding: 10px;" />
-          <input type="text" name="language" placeholder="Language" style="padding: 10px;" />
+        <div class="input-group horizontal">
+          <input type="text" name="director" placeholder="Director Name" class="attribute-input"
+            value="{{ query.director | default('') }}" />
+          <input type="text" name="cast" placeholder="Cast Member" class="attribute-input"
+            value="{{ query.cast | default('') }}" />
+          <input type="text" name="country" placeholder="Country" class="attribute-input"
+            value="{{ query.country | default('') }}" />
+          <input type="text" name="language" placeholder="Language" class="attribute-input"
+            value="{{ query.language | default('') }}" />
         </div>
       </div>
 
-      <!-- Search Button -->
+      <!-- Unified Search Button -->
       <div class="text-center">
         <button type="submit" class="btn btn-outline-light">Search</button>
       </div>

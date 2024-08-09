@@ -30,6 +30,8 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
   if (genres) {
     if (typeof genres === 'string') {
       genres = [genres]; // Convert to array if it's a string
+    } else if (!Array.isArray(genres)) {
+      genres = []; // Default to an empty array if undefined or not an array
     }
 
     // Add conditions to match all selected genres
@@ -109,6 +111,8 @@ async function countMovies(filters = {}) {
   if (filters.genres) {
     if (typeof filters.genres === 'string') {
       filters.genres = [filters.genres]; // Convert to array if it's a string
+    } else if (!Array.isArray(filters.genres)) {
+      filters.genres = []; // Default to an empty array if undefined or not an array
     }
 
     filters.genres.forEach((genre) => {
