@@ -124,6 +124,69 @@ async function likeArticle(article_id) {
   }
 }
 
+// // Search for movies based on various attributes
+// async function searchMovies({ genres, minYear, maxYear, minRating, maxRating, director, cast, country, language }) {
+//   const db = await openConnectionToDB(); // Open database connection
+
+//   // Initialize query and parameters array
+//   let query = 'SELECT * FROM MovRec_movie WHERE 1=1';
+//   let params = [];
+
+//   // Add conditions to the query based on provided filters
+//   if (genres) {
+//     if (!Array.isArray(genres)) genres = [genres];
+//     query += ' AND (' + genres.map(() => 'genre LIKE ?').join(' OR ') + ')';
+//     params.push(...genres.map(g => `%${g}%`));
+//   }
+//   if (minYear) {
+//     query += ' AND year >= ?';
+//     params.push(minYear);
+//   }
+//   if (maxYear) {
+//     query += ' AND year <= ?';
+//     params.push(maxYear);
+//   }
+//   if (minRating) {
+//     query += ' AND imdbrating >= ?';
+//     params.push(minRating);
+//   }
+//   if (maxRating) {
+//     query += ' AND imdbrating <= ?';
+//     params.push(maxRating);
+//   }
+//   if (director) {
+//     query += ' AND director LIKE ?';
+//     params.push(`%${director}%`);
+//   }
+//   if (cast) {
+//     query += ' AND cast LIKE ?';
+//     params.push(`%${cast}%`);
+//   }
+//   if (country) {
+//     query += ' AND country LIKE ?';
+//     params.push(`%${country}%`);
+//   }
+//   if (language) {
+//     query += ' AND language LIKE ?';
+//     params.push(`%${language}%`);
+//   }
+
+//   // Execute the query with parameters
+//   let movieSearchResult = await db.all(query, ...params);
+
+//   // Set a default placeholder image URL
+//   const placeholderImage = 'https://via.placeholder.com/300x450?text=No+Image+Available';
+
+//   // Replace missing poster images with the placeholder image
+//   movieSearchResult.forEach(movie => {
+//     if (!movie.poster) {
+//       movie.poster = placeholderImage;
+//     }
+//   });
+
+//   return movieSearchResult;
+// }
+
 // Search for movies based on various attributes
 async function searchMovies({ genres, minYear, maxYear, minRating, maxRating, director, cast, country, language }) {
   const db = await openConnectionToDB(); // Open database connection
@@ -186,6 +249,20 @@ async function searchMovies({ genres, minYear, maxYear, minRating, maxRating, di
 
   return movieSearchResult;
 }
+
+// Export the functions for use in other parts of the application
+module.exports = {
+  openConnectionToDB,
+  getAllArticles,
+  getArticleDetail,
+  addArticle,
+  updateArticle,
+  deleteArticle,
+  likeArticle,
+  getAllMoviesByGenre,
+  searchMovies
+};
+
 
 // Export the functions for use in other parts of the application
 module.exports = {

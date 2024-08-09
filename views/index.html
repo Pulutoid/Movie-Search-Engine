@@ -1,190 +1,190 @@
-{% extends "base.html" %}
-{% block mainContent %}
-<!-- Main content area extending from base template -->
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Hero Section with Welcome Message -->
-<div id="hero-section" class="text-center text-white">
-    <div class="container">
-        <h1 class="display-4">Welcome to The</h1>
-        <h1 class="LogoText display-1">Tech Blog 2023</h1>
-        <p class="lead">The best place to share your knowledge and make the world better</p>
-        <a href="./new_movie.html" class="btn btn-success mt-4">Create a Movie</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="globals.css" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Movie Search</title>
+  <style>
+    body {
+      background-color: #1c2c2b;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .search-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .search-section input {
+      width: 400px;
+      padding: 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+    }
+
+    .search-section button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-section button:hover {
+      background-color: #45a049;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 36px;
+    }
+
+    .filter-section {
+      margin-bottom: 40px;
+    }
+
+    .filter-section h4 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-group button {
+      margin: 5px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 1px solid #ffffff;
+      background-color: transparent;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-group button:hover,
+    .btn-group button.active {
+      background-color: #4caf50;
+      color: #ffffff;
+    }
+
+    .movie-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .grid-item {
+      width: 150px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    .grid-item img:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Search Section -->
+    <form action="/search" method="GET" class="search-section">
+      <input type="text" name="title" placeholder="Search for movies..." />
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- Advanced Search Filters -->
+    <form action="/search" method="GET" class="filter-section">
+      <!-- Genre Buttons -->
+      <div class="mb-4">
+        <h4>Select Genres</h4>
+        <div class="btn-group">
+          <button class="btn filter-btn" name="genres" value="Short">Short</button>
+          <button class="btn filter-btn" name="genres" value="Animation">Animation</button>
+          <button class="btn filter-btn" name="genres" value="Documentary">Documentary</button>
+          <button class="btn filter-btn" name="genres" value="Comedy">Comedy</button>
+          <button class="btn filter-btn" name="genres" value="Drama">Drama</button>
+          <button class="btn filter-btn" name="genres" value="Action">Action</button>
+        </div>
+      </div>
+
+      <!-- Year Decade Buttons -->
+      <div class="mb-4">
+        <h4>Select Decade</h4>
+        <div class="btn-group">
+          <button class="btn filter-btn" name="minYear" value="1880" data-maxYear="1889">1880s</button>
+          <button class="btn filter-btn" name="minYear" value="1890" data-maxYear="1899">1890s</button>
+          <button class="btn filter-btn" name="minYear" value="1900" data-maxYear="1909">1900s</button>
+          <!-- Add more buttons for each decade up to 2030s -->
+        </div>
+      </div>
+
+      <!-- IMDb Rating Buttons -->
+      <div class="mb-4">
+        <h4>Select IMDb Rating</h4>
+        <div class="btn-group">
+          <button class="btn filter-btn" name="minRating" value="7" data-maxRating="10">7-10</button>
+          <button class="btn filter-btn" name="minRating" value="5" data-maxRating="7">5-7</button>
+          <button class="btn filter-btn" name="minRating" value="0" data-maxRating="5">0-5</button>
+        </div>
+      </div>
+
+      <!-- Other Attribute Buttons -->
+      <div class="mb-4">
+        <h4>Select Other Attributes</h4>
+        <div class="btn-group">
+          <button class="btn filter-btn" name="director" value="Director+Name">Director Name</button>
+          <button class="btn filter-btn" name="cast" value="Cast+Member">Cast Member</button>
+          <button class="btn filter-btn" name="country" value="Country">Country</button>
+          <button class="btn filter-btn" name="language" value="Language">Language</button>
+        </div>
+      </div>
+
+      <!-- Search Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-outline-light">Search</button>
+      </div>
+    </form>
+
+    <!-- Movie Grid Section -->
+    <h1>Top Recommendations</h1>
+    <div class="movie-grid">
+      {% for movie in movieSearchResult %}
+      <div class="grid-item">
+        <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" />
+      </div>
+      {% endfor %}
     </div>
-</div>
+  </div>
+</body>
 
-<!-- Advanced Search Filters -->
-<div class="container mt-5">
-    <div class="bg-dark text-white p-4 rounded">
-        <div class="row mb-3">
-            <!-- Genre Buttons -->
-            <div class="col-md-12 text-center">
-                <h4>Select Genres</h4>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-light filter-btn" data-filter="genres"
-                        data-value="Short">Short</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="genres"
-                        data-value="Animation">Animation</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="genres"
-                        data-value="Documentary">Documentary</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="genres"
-                        data-value="Comedy">Comedy</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="genres"
-                        data-value="Drama">Drama</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="genres"
-                        data-value="Action">Action</button>
-                    <!-- Add more buttons as needed -->
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <!-- Year Decade Buttons -->
-            <div class="col-md-12 text-center">
-                <h4>Select Decade</h4>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-light filter-btn" data-filter="minYear" data-value="1880"
-                        data-maxYear="1889">1880s</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="minYear" data-value="1890"
-                        data-maxYear="1899">1890s</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="minYear" data-value="1900"
-                        data-maxYear="1909">1900s</button>
-                    <!-- Add more buttons for each decade up to 2030s -->
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <!-- IMDb Rating Buttons -->
-            <div class="col-md-12 text-center">
-                <h4>Select IMDb Rating</h4>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-light filter-btn" data-filter="minRating" data-value="7"
-                        data-maxRating="10">7-10</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="minRating" data-value="5"
-                        data-maxRating="7">5-7</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="minRating" data-value="0"
-                        data-maxRating="5">0-5</button>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <!-- Other Attribute Buttons -->
-            <div class="col-md-12 text-center">
-                <h4>Select Other Attributes</h4>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-light filter-btn" data-filter="director"
-                        data-value="Director+Name">Director Name</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="cast" data-value="Cast+Member">Cast
-                        Member</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="country"
-                        data-value="Country">Country</button>
-                    <button class="btn btn-outline-light filter-btn" data-filter="language"
-                        data-value="Language">Language</button>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <!-- Search Button -->
-            <div class="col-md-12 text-center">
-                <button id="search-button" class="btn btn-outline-light">Search</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Movie List Header -->
-<header class="container mt-5">
-    <h1 class="text-white">All Technical Movies</h1>
-</header>
-
-<!-- Loop through each movie in the movieSearchResult array -->
-<div class="container mt-4">
-    <div class="row">
-        {% for movie in movieSearchResult %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card bg-dark text-white movie-card">
-                <div class="row g-0">
-                    <div class="col-5">
-                        <img src="{{ movie.poster }}" class="card-img-left img-fluid" alt="{{ movie.title }} poster">
-                    </div>
-                    <div class="col-7">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ movie.title }} ({{ movie.year }})</h5>
-                            <p class="card-text"><strong>Genre:</strong> {{ movie.genre }}</p>
-                            <p class="card-text"><strong>Runtime:</strong> {{ movie.runtime }} minutes</p>
-                            <p class="card-text"><strong>Director:</strong> {{ movie.director }}</p>
-                            <p class="card-text"><strong>Cast:</strong> {{ movie.cast }}</p>
-                            <p class="card-text"><strong>Language:</strong> {{ movie.language }}</p>
-                            <p class="card-text"><strong>Country:</strong> {{ movie.country }}</p>
-                            <p class="card-text"><strong>Awards:</strong> {{ movie.awards }}</p>
-                            <p class="card-text"><strong>IMDb Rating:</strong> {{ movie.imdbRating }} ({{ movie.votes }}
-                                votes)</p>
-                            <p class="card-text"><strong>Plot:</strong> {{ movie.fullplot }}</p>
-                            <div class="mt-3 d-flex justify-content-between">
-                                <a href='movie.html/{{ movie.id }}' class="btn btn-outline-light btn-sm">Read Now</a>
-                                <a href='edit/{{ movie.id }}' class="btn btn-outline-light btn-sm">Edit</a>
-                                <form action='delete/{{ movie.id }}' method="POST" style="display:inline;">
-                                    <button class="btn btn-outline-light btn-sm" type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-<!-- End loop through movieSearchResult -->
-
-<script>
-    // JavaScript to handle filter selection and search
-    document.addEventListener("DOMContentLoaded", function () {
-        const filters = {};
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        filterButtons.forEach(button => {
-            button.addEventListener("click", function () {
-                const filter = this.getAttribute("data-filter");
-                const value = this.getAttribute("data-value");
-                const maxValue = this.getAttribute("data-maxYear") || this.getAttribute("data-maxRating");
-
-                // Toggle active state
-                this.classList.toggle("active");
-
-                if (this.classList.contains("active")) {
-                    // Add to filters
-                    if (filter === "minYear" || filter === "minRating") {
-                        filters[filter] = value;
-                        if (maxValue) {
-                            filters[maxValue.includes("Year") ? "maxYear" : "maxRating"] = maxValue;
-                        }
-                    } else {
-                        if (!filters[filter]) {
-                            filters[filter] = [];
-                        }
-                        filters[filter].push(value);
-                    }
-                } else {
-                    // Remove from filters
-                    if (filter === "minYear" || filter === "minRating") {
-                        delete filters[filter];
-                        if (maxValue) {
-                            delete filters[maxValue.includes("Year") ? "maxYear" : "maxRating"];
-                        }
-                    } else {
-                        filters[filter] = filters[filter].filter(v => v !== value);
-                        if (filters[filter].length === 0) {
-                            delete filters[filter];
-                        }
-                    }
-                }
-            });
-        });
-
-        // Handle search button click
-        document.getElementById("search-button").addEventListener("click", function () {
-            const query = new URLSearchParams(filters).toString();
-            window.location.href = `/search?${query}`;
-        });
-    });
-</script>
-
-{% endblock %}
+</html>
