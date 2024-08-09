@@ -23,14 +23,23 @@ async function mainIndexHtml() {
     express: app        // Attach Nunjucks to the Express app
   });
 
-  // Route for the home page
+  // Route for the home page with pagination
   app.get('/', async (req, res) => {
     try {
-      // Fetch all movies from the database
-      const movieSearchResult = await articleModel.searchMovies({});
+      // Get page number from query, default to 1 if not provided
+      const page = parseInt(req.query.page) || 1;
+      const moviesPerPage = 100;
+      const offset = (page - 1) * moviesPerPage;
 
-      // Render the 'index.html' template with the fetched movies
-      res.send(nunjucks.render('index.html', { movieSearchResult }));
+      // Fetch movies for the current page from the database
+      const movieSearchResult = await articleModel.searchMovies({}, offset, moviesPerPage);
+
+      // Fetch the total count of movies for pagination
+      const totalMovies = await articleModel.countMovies();
+      const totalPages = Math.ceil(totalMovies / moviesPerPage);
+
+      // Render the 'index.html' template with the fetched movies and pagination data
+      res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages }));
     } catch (error) {
       console.error("Error fetching movies:", error);
       res.status(500).send("Internal Server Error");
@@ -57,11 +66,20 @@ async function mainIndexHtml() {
         language
       };
 
-      // Call searchMovies with the extracted parameters
-      const movieSearchResult = await articleModel.searchMovies(filters);
+      // Calculate pagination details
+      const page = parseInt(req.query.page) || 1;
+      const moviesPerPage = 100;
+      const offset = (page - 1) * moviesPerPage;
 
-      // Render the 'index.html' template with the search results
-      res.send(nunjucks.render('index.html', { movieSearchResult }));
+      // Call searchMovies with the extracted parameters
+      const movieSearchResult = await articleModel.searchMovies(filters, offset, moviesPerPage);
+
+      // Fetch the total count of movies for pagination
+      const totalMovies = await articleModel.countMovies(filters);
+      const totalPages = Math.ceil(totalMovies / moviesPerPage);
+
+      // Render the 'index.html' template with the search results and pagination data
+      res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages }));
     } catch (error) {
       console.error("Error fetching movies by search parameters:", error);
       res.status(500).send("Internal Server Error");

@@ -113,3 +113,26 @@ h1 {
 .grid-item img:hover {
   transform: scale(1.05);
 }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  padding: 10px 15px;
+  margin: 0 5px;
+  background-color: #4caf50;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.pagination a:hover {
+  background-color: #45a049;
+}
+
+.pagination span {
+  padding: 10px 15px;
+}

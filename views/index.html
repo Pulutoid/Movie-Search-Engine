@@ -79,6 +79,18 @@
       </div>
       {% endfor %}
     </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      {% if page > 1 %}
+      <a href="/?page={{ page - 1 }}" class="pagination-prev">Previous</a>
+      {% endif %}
+
+      <span>Page {{ page }} of {{ totalPages }}</span>
+
+      {% if page < totalPages %} <a href="/?page={{ page + 1 }}" class="pagination-next">Next</a>
+        {% endif %}
+    </div>
   </div>
 </body>
 
