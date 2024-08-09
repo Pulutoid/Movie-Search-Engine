@@ -4,7 +4,6 @@ const nunjucks = require('nunjucks');
 const app = express();
 const cookieParser = require('cookie-parser');
 const articleModel = require('./models/article_model.js');
-const path = require('path');
 const multer = require('multer');
 
 // Middleware setup
@@ -18,23 +17,20 @@ const upload = multer({ dest: 'public/' });
 
 // Main function to initialize the server and routes
 async function mainIndexHtml() {
-  // Open a connection to the database
-  const db = await articleModel.openConnectionToDB();
-
   // Configure Nunjucks template engine
   nunjucks.configure('views', {
-    autoescape: false,
-    express: app
+    autoescape: false,  // Disable autoescape for flexibility
+    express: app        // Attach Nunjucks to the Express app
   });
 
   // Route for the home page
   app.get('/', async (req, res) => {
     try {
       // Fetch all movies from the database
-      let movieSearchResult = await db.all('SELECT * FROM MovRec_movie');
+      const movieSearchResult = await articleModel.searchMovies({});
+
       // Render the 'index.html' template with the fetched movies
-      const html = nunjucks.render('index.html', { movieSearchResult });
-      res.send(html); // Send the rendered HTML to the client
+      res.send(nunjucks.render('index.html', { movieSearchResult }));
     } catch (error) {
       console.error("Error fetching movies:", error);
       res.status(500).send("Internal Server Error");
@@ -45,35 +41,32 @@ async function mainIndexHtml() {
   app.get('/search', async (req, res) => {
     try {
       // Retrieve search parameters from query
-      let { genres, minYear, maxYear, minRating, maxRating, director, cast, country, language } = req.query;
+      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language } = req.query;
 
-      // Adjust for decade-based year ranges
-      if (minYear) minYear = parseInt(minYear);
-      if (maxYear) maxYear = parseInt(maxYear);
-
-      // Call searchMovies with the extracted parameters
-      let movieSearchResult = await articleModel.searchMovies({
+      // Convert year filters to integers if present
+      const filters = {
+        title,
         genres,
-        minYear,
-        maxYear,
+        minYear: minYear ? parseInt(minYear) : undefined,
+        maxYear: maxYear ? parseInt(maxYear) : undefined,
         minRating,
         maxRating,
         director,
         cast,
         country,
         language
-      });
+      };
+
+      // Call searchMovies with the extracted parameters
+      const movieSearchResult = await articleModel.searchMovies(filters);
 
       // Render the 'index.html' template with the search results
-      const html = nunjucks.render('index.html', { movieSearchResult });
-      res.send(html); // Send the rendered HTML to the client
+      res.send(nunjucks.render('index.html', { movieSearchResult }));
     } catch (error) {
       console.error("Error fetching movies by search parameters:", error);
       res.status(500).send("Internal Server Error");
     }
   });
-
-  // Remaining routes (e.g., /article.html/:id, /new_article.html, etc.) remain unchanged
 
   // Start the server and listen on port 3000
   app.listen(3000, () => {
@@ -81,5 +74,5 @@ async function mainIndexHtml() {
   });
 }
 
-// Call the main function to start the server and set up routes
-mainIndexHtml(); // Ensure this call is after the function definition
+// Start the server and set up routes
+mainIndexHtml();
