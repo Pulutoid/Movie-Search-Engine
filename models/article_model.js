@@ -24,7 +24,6 @@ async function profileIdExists(db, profileID) {
 }
 
 // Function to insert a new profile into the database
-// Function to insert a new profile into the database
 async function insertProfile({ name, birthYear, picture, favouriteFilters }) {
   const db = await openConnectionToDB();
 
@@ -43,7 +42,40 @@ async function insertProfile({ name, birthYear, picture, favouriteFilters }) {
   return profileID; // Return the generated profileID
 }
 
-// Search for movies based on various attributes with pagination
+// Function to get a profile by ID
+async function getProfileById(profileID) {
+  const db = await openConnectionToDB();
+  const query = `SELECT * FROM profiles WHERE profileID = ?`;
+  const profile = await db.get(query, profileID);
+
+  // Ensure favouriteFilters is returned as an array
+  if (profile && profile.favouriteFilters) {
+    profile.favouriteFilters = profile.favouriteFilters.split(',');
+  }
+
+  return profile;
+}
+
+// Function to update an existing profile in the database
+async function updateProfile({ profileID, name, birthYear, picture, favouriteFilters }) {
+  const db = await openConnectionToDB();
+
+  const query = `UPDATE profiles 
+                 SET name = ?, birthYear = ?, picture = COALESCE(?, picture), favouriteFilters = ?
+                 WHERE profileID = ?`;
+
+  await db.run(query, [name, birthYear, picture, favouriteFilters.join(','), profileID]);
+}
+
+// Function to get all profiles from the database
+async function getAllProfiles() {
+  const db = await openConnectionToDB();
+  const query = `SELECT profileID, name, picture FROM profiles`;
+  const profiles = await db.all(query);
+  return profiles;
+}
+
+// Function to search for movies based on various attributes with pagination
 async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language }, offset = 0, limit = 100) {
   const db = await openConnectionToDB(); // Open database connection
 
@@ -124,7 +156,7 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
   return movieSearchResult;
 }
 
-// Get a movie by its ID
+// Function to get a movie by its ID
 async function getMovieById(id) {
   const db = await openConnectionToDB(); // Open database connection
 
@@ -136,7 +168,7 @@ async function getMovieById(id) {
   return movie;
 }
 
-// Count the total number of movies in the database (with optional filters)
+// Function to count the total number of movies in the database (with optional filters)
 async function countMovies(filters = {}) {
   const db = await openConnectionToDB(); // Open database connection
 
@@ -197,33 +229,6 @@ async function countMovies(filters = {}) {
   return row.count;
 }
 
-
-
-// Function to get a profile by ID
-async function getProfileById(profileID) {
-  const db = await openConnectionToDB();
-  const query = `SELECT * FROM profiles WHERE profileID = ?`;
-  const profile = await db.get(query, profileID);
-
-  // Ensure favouriteFilters is returned as an array
-  if (profile && profile.favouriteFilters) {
-    profile.favouriteFilters = profile.favouriteFilters.split(',');
-  }
-
-  return profile;
-}
-
-// Function to update an existing profile in the database
-async function updateProfile({ profileID, name, birthYear, picture, favouriteFilters }) {
-  const db = await openConnectionToDB();
-
-  const query = `UPDATE profiles 
-                 SET name = ?, birthYear = ?, picture = COALESCE(?, picture), favouriteFilters = ?
-                 WHERE profileID = ?`;
-
-  await db.run(query, [name, birthYear, picture, favouriteFilters, profileID]);
-}
-
 // Export functions
 module.exports = {
   openConnectionToDB,
@@ -232,5 +237,6 @@ module.exports = {
   countMovies,
   getMovieById,
   getProfileById,
-  updateProfile
+  updateProfile,
+  getAllProfiles // Ensure this is exported
 };

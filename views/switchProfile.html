@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="switchProfile.css">
+    <title>Switch Profile</title>
+</head>
+
+<body>
+    <div class="switch-container">
+        <div class="logo">
+            <img src="path_to_logo_image" alt="Movie Search Engine Logo" class="logo-image">
+            <h1>Switch Profile</h1>
+        </div>
+        <form action="/switchProfile" method="POST">
+            <h2>Select Profile</h2>
+            <div class="profile-selection">
+                {% for profile in profiles %}
+                <div class="profile-card">
+                    <img src="{{ profile.picture }}" alt="{{ profile.name }}'s Picture" class="profile-picture">
+                    <h3>{{ profile.name }}</h3>
+                    <button type="submit" name="profileID" value="{{ profile.profileID }}"
+                        class="select-button">Select</button>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
