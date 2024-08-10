@@ -6,28 +6,44 @@ async function openConnectionToDB() {
     return await articleModel.openConnectionToDB();
 }
 
-// Function to delete movies without posters
-async function deleteMoviesWithoutPosters() {
+// Function to get all unique genres from the database
+async function getUniqueGenres() {
     const db = await openConnectionToDB();
-    const placeholderImage = 'https://via.placeholder.com/300x450?text=No+Image+Available';
 
-    // Get movies with missing posters
-    const moviesWithoutPosters = await db.all('SELECT id, title FROM MovRec_movie WHERE poster IS NULL OR poster = ?', [placeholderImage]);
+    // Query to get all genres from the MovRec_movie table
+    const rows = await db.all('SELECT genre FROM MovRec_movie');
 
-    for (const movie of moviesWithoutPosters) {
-        try {
-            // Delete movie from the database
-            await db.run('DELETE FROM MovRec_movie WHERE id = ?', [movie.id]);
-            console.log(`Deleted movie: ${movie.title} (ID: ${movie.id})`);
-        } catch (error) {
-            console.error(`Failed to delete ${movie.title} (ID: ${movie.id}):`, error.message);
+    // Set to store unique genres
+    const uniqueGenres = new Set();
+
+    // Iterate through each row and add genres to the set
+    rows.forEach(row => {
+        if (row.genre) {
+            const genresArray = row.genre.split(',').map(genre => genre.trim());
+            genresArray.forEach(genre => uniqueGenres.add(genre));
         }
-    }
+    });
 
-    console.log('Deletion process completed');
+    // Convert the set to an array and return it
+    return Array.from(uniqueGenres);
 }
 
-// Run the script
-deleteMoviesWithoutPosters().then(() => {
-    console.log('Movies without posters have been deleted');
+// Run the script to get unique genres
+getUniqueGenres().then(genres => {
+    console.log('Unique genres available in the database:');
+    console.log(genres);
+}).catch(error => {
+    console.error('Failed to retrieve unique genres:', error.message);
 });
+
+[
+    'Documentary', 'Short', 'Drama',
+    'Fantasy', 'Adventure', 'Action',
+    'Western', 'Horror', 'Animation',
+    'Comedy', 'Sci-Fi', 'Crime',
+    'History', 'Romance', 'Sport',
+    'War', 'Biography', 'Family',
+    'Thriller', 'Mystery', 'Music',
+    'Musical', 'Film-Noir', 'Adult',
+    'Talk-Show', 'News', 'Reality-TV'
+]

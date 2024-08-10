@@ -92,6 +92,8 @@ body {
   flex-direction: column;
   align-items: center;
   margin-bottom: 40px;
+  margin-left: 400px;
+  margin-right: 400px;
 }
 
 .search-section input {
@@ -125,6 +127,7 @@ h1 {
 }
 
 /* Filter Group Styles */
+/* Filter Group Styles */
 .filter-group {
   margin-bottom: 30px;
   width: 100%;
@@ -137,8 +140,9 @@ h1 {
 }
 
 .btn-group.vertical {
-  display: contents;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 filters per row */
+  gap: 10px;
 }
 
 .btn-group.vertical label {
@@ -146,14 +150,32 @@ h1 {
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  margin: 5px;
   background-color: #2b3a3b;
   border-radius: 15px;
   font-size: 18px;
   transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: pointer;
-  width: 100%;
 }
+
+/* Hide the checkbox input */
+.btn-group.vertical input[type="checkbox"] {
+  display: none;
+}
+
+/* Apply the selected class to change the background color */
+.btn-group.vertical input[type="checkbox"]:checked + label,
+.btn-group.vertical label.selected {
+  background-color: #22a827; /* Green background when selected */
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Hover effect with background color change */
+.btn-group.vertical label:hover {
+  background-color: #4caf50;
+  transform: scale(1.05);
+}
+
 
 /* Hide the checkbox input */
 .btn-group.vertical input[type="checkbox"] {

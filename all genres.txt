@@ -1,0 +1,11 @@
+[
+  'Documentary', 'Short',     'Drama',
+  'Fantasy',     'Adventure', 'Action',
+  'Western',     'Horror',    'Animation',
+  'Comedy',      'Sci-Fi',    'Crime',
+  'History',     'Romance',   'Sport',
+  'War',         'Biography', 'Family',
+  'Thriller',    'Mystery',   'Music',
+  'Musical',     'Film-Noir', 'Adult',
+  'Talk-Show',   'News',      'Reality-TV'
+]
