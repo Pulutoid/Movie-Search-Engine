@@ -11,6 +11,35 @@ async function openConnectionToDB() {
   return db; // Return the database connection object
 }
 
+// Function to generate a 24-digit random ID
+function generateRandomId() {
+  return Math.floor(Math.random() * 1e24).toString().padStart(24, '0');
+}
+
+// Function to check if a profile ID already exists in the database
+async function profileIdExists(db, profileID) {
+  const query = 'SELECT COUNT(*) as count FROM profiles WHERE profileID = ?';
+  const row = await db.get(query, profileID);
+  return row.count > 0;
+}
+
+// Function to insert a new profile into the database
+async function insertProfile({ name, birthYear, picture, favouriteFilters }) {
+  const db = await openConnectionToDB();
+
+  let profileID;
+  let idExists = true;
+
+  // Generate a unique profile ID
+  while (idExists) {
+    profileID = generateRandomId();
+    idExists = await profileIdExists(db, profileID);
+  }
+
+  const query = `INSERT INTO profiles (profileID, name, birthYear, picture, favouriteFilters) VALUES (?, ?, ?, ?, ?)`;
+  await db.run(query, [profileID, name, birthYear, picture, favouriteFilters]);
+}
+
 // Search for movies based on various attributes with pagination
 async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language }, offset = 0, limit = 100) {
   const db = await openConnectionToDB(); // Open database connection
@@ -168,6 +197,7 @@ async function countMovies(filters = {}) {
 // Export the functions for use in other parts of the application
 module.exports = {
   openConnectionToDB,
+  insertProfile,
   searchMovies,
   countMovies,
   getMovieById

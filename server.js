@@ -5,6 +5,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const articleModel = require('./models/article_model.js');
 const multer = require('multer');
+const path = require('path');
 
 // Middleware setup
 app.use(express.static('public'));
@@ -13,7 +14,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set up file storage with multer for file uploads
-const upload = multer({ dest: 'public/' });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
 
 // Main function to initialize the server and routes
 async function mainIndexHtml() {
@@ -105,6 +114,36 @@ async function mainIndexHtml() {
       res.send(nunjucks.render('movie.html', { movie: movieDetails }));
     } catch (error) {
       console.error("Error fetching movie details:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // Route for the sign-up page
+  app.get('/signup', (req, res) => {
+    try {
+      // Render the 'signup.html' template
+      res.send(nunjucks.render('signup.html'));
+    } catch (error) {
+      console.error("Error rendering signup page:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // POST route to handle sign-up form submission
+  app.post('/signup', upload.single('picture'), async (req, res) => {
+    try {
+      const { name, birth_year, favouriteFilters } = req.body;
+      const picture = req.file ? `/uploads/${req.file.filename}` : null;
+
+      // Convert favouriteFilters to string (comma-separated)
+      const filters = Array.isArray(favouriteFilters) ? favouriteFilters.join(',') : favouriteFilters;
+
+      // Insert new profile into the database
+      await articleModel.insertProfile({ name, birthYear: birth_year, picture, favouriteFilters: filters });
+
+      res.send("Profile created successfully!");
+    } catch (error) {
+      console.error("Error creating profile:", error);
       res.status(500).send("Internal Server Error");
     }
   });

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="signUp.css">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="signup-container">
+        <div class="left-side">
+            <div class="logo">
+                <img src="path_to_logo_image" alt="Movie Search Engine Logo" class="logo-image">
+                <h1>Sign Up</h1>
+            </div>
+            <div class="profile-picture">
+                <div class="profile-pic-container">
+                    <img src="path_to_profile_placeholder" alt="Profile Picture" class="profile-pic"
+                        id="profilePicPreview">
+                    <label for="profilePic" class="edit-icon">✏️ Edit</label>
+                    <input type="file" id="profilePic" name="picture" accept="image/*" style="display:none;">
+                </div>
+            </div>
+            <form class="signup-form" action="/signup" method="POST" enctype="multipart/form-data">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="birth_year" placeholder="Birth Year" required>
+                <div class="genre-selection">
+                    <h2>Movie Genre</h2>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Art"> Art
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="War"> War
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Crime"> Crime
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Comedy"> Comedy
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Family"> Family
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Action"> Action
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Animation"> Animation
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Drama"> Drama
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Horror"> Horror
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Adventure"> Adventure
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Musical"> Musical
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Romance"> Romance
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Mystery"> Mystery
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Fiction"> Fiction
+                    </label>
+                    <label class="genre-label">
+                        <input type="checkbox" name="favouriteFilters" value="Documentary"> Documentary
+                    </label>
+                </div>
+                <button type="submit" class="signup-button">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Preview selected profile picture
+        const profilePicInput = document.getElementById('profilePic');
+        const profilePicPreview = document.getElementById('profilePicPreview');
+
+        profilePicInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profilePicPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+
+</html>
