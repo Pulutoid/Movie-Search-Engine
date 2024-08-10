@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="viewProfile.css">
+    <title>View Profile</title>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <img src="{{ profile.picture }}" alt="Profile Picture" class="profile-picture">
+                <h1>{{ profile.name }}</h1>
+                <p>Birth Year: {{ profile.birthYear }}</p>
+            </div>
+            <div class="profile-content">
+                <h2>Favourite Genres</h2>
+                <ul>
+                    {% if profile.favouriteFilters %}
+                    {% for genre in profile.favouriteFilters.split(',') %}
+                    <li>{{ genre }}</li>
+                    {% endfor %}
+                    {% else %}
+                    <li>No favourite genres listed.</li>
+                    {% endif %}
+                </ul>
+                <h2>Favourite Movies</h2>
+                <ul>
+                    {% if profile.favouriteMovies %}
+                    {% for movie in profile.favouriteMovies.split(',') %}
+                    <li>{{ movie }}</li>
+                    {% endfor %}
+                    {% else %}
+                    <li>No favourite movies listed.</li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="profile-footer">
+                <a href="/editProfile?id={{ profile.profileID }}" class="edit-profile-button">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

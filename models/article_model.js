@@ -11,9 +11,9 @@ async function openConnectionToDB() {
   return db; // Return the database connection object
 }
 
-// Function to generate a 24-digit random ID
+// Function to generate a 12-digit random ID without scientific notation
 function generateRandomId() {
-  return Math.floor(Math.random() * 1e24).toString().padStart(24, '0');
+  return Array.from({ length: 12 }, () => Math.floor(Math.random() * 10)).join('');
 }
 
 // Function to check if a profile ID already exists in the database
@@ -23,6 +23,7 @@ async function profileIdExists(db, profileID) {
   return row.count > 0;
 }
 
+// Function to insert a new profile into the database
 // Function to insert a new profile into the database
 async function insertProfile({ name, birthYear, picture, favouriteFilters }) {
   const db = await openConnectionToDB();
@@ -38,6 +39,8 @@ async function insertProfile({ name, birthYear, picture, favouriteFilters }) {
 
   const query = `INSERT INTO profiles (profileID, name, birthYear, picture, favouriteFilters) VALUES (?, ?, ?, ?, ?)`;
   await db.run(query, [profileID, name, birthYear, picture, favouriteFilters]);
+
+  return profileID; // Return the generated profileID
 }
 
 // Search for movies based on various attributes with pagination
@@ -194,11 +197,33 @@ async function countMovies(filters = {}) {
   return row.count;
 }
 
+
+// Function to get a profile by ID
+async function getProfileById(profileID) {
+  const db = await openConnectionToDB();
+  const query = `SELECT * FROM profiles WHERE profileID = ?`;
+  const profile = await db.get(query, profileID);
+  return profile;
+}
+
+// Function to update an existing profile in the database
+async function updateProfile({ profileID, name, birthYear, picture, favouriteFilters }) {
+  const db = await openConnectionToDB();
+
+  const query = `UPDATE profiles 
+                 SET name = ?, birthYear = ?, picture = COALESCE(?, picture), favouriteFilters = ?
+                 WHERE profileID = ?`;
+
+  await db.run(query, [name, birthYear, picture, favouriteFilters, profileID]);
+}
+
 // Export the functions for use in other parts of the application
 module.exports = {
   openConnectionToDB,
   insertProfile,
   searchMovies,
   countMovies,
-  getMovieById
+  getMovieById,
+  getProfileById,  // Make sure this is exported
+  updateProfile
 };

@@ -130,6 +130,7 @@ async function mainIndexHtml() {
   });
 
   // POST route to handle sign-up form submission
+  // POST route to handle sign-up form submission
   app.post('/signup', upload.single('picture'), async (req, res) => {
     try {
       const { name, birth_year, favouriteFilters } = req.body;
@@ -138,12 +139,83 @@ async function mainIndexHtml() {
       // Convert favouriteFilters to string (comma-separated)
       const filters = Array.isArray(favouriteFilters) ? favouriteFilters.join(',') : favouriteFilters;
 
-      // Insert new profile into the database
-      await articleModel.insertProfile({ name, birthYear: birth_year, picture, favouriteFilters: filters });
+      // Insert new profile into the database and get the profileID
+      const profileID = await articleModel.insertProfile({ name, birthYear: birth_year, picture, favouriteFilters: filters });
+
+      if (!profileID) {
+        throw new Error('Failed to generate profile ID');
+      }
+
+      // Store profileID in a cookie
+      res.cookie('profileID', profileID, { maxAge: 900000, httpOnly: true });
 
       res.send("Profile created successfully!");
     } catch (error) {
       console.error("Error creating profile:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+
+  // Route to view profile page
+  // Route to view profile page
+  app.get('/viewProfile', async (req, res) => {
+    try {
+      const profileID = req.cookies.profileID;
+      if (!profileID) {
+        return res.status(400).send("Bad Request: Profile ID is required");
+      }
+
+      // Fetch profile details by ID
+      const profile = await articleModel.getProfileById(profileID);
+
+      if (!profile) {
+        return res.status(404).send("Profile not found");
+      }
+
+      // Render the 'viewProfile.html' template with the profile details
+      res.send(nunjucks.render('viewProfile.html', { profile }));
+    } catch (error) {
+      console.error("Error fetching profile details:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // Route to get profile by ID (used for profile retrieval)
+  app.get('/get-profile', async (req, res) => {
+    try {
+      const profileID = req.query.id;
+      if (!profileID) {
+        return res.status(400).json({ error: "Profile ID is required" });
+      }
+
+      const profile = await articleModel.getProfileById(profileID);
+      if (!profile) {
+        return res.status(404).json({ error: "Profile not found" });
+      }
+
+      res.json(profile);
+    } catch (error) {
+      console.error("Error retrieving profile:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  // Route to handle profile edits
+  app.post('/edit', upload.single('picture'), async (req, res) => {
+    try {
+      const { profileID, name, birth_year, favouriteFilters } = req.body;
+      const picture = req.file ? `/uploads/${req.file.filename}` : null;
+
+      // Convert favouriteFilters to string (comma-separated)
+      const filters = Array.isArray(favouriteFilters) ? favouriteFilters.join(',') : favouriteFilters;
+
+      // Update the profile in the database
+      await articleModel.updateProfile({ profileID, name, birthYear: birth_year, picture, favouriteFilters: filters });
+
+      res.send("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
       res.status(500).send("Internal Server Error");
     }
   });
