@@ -130,3 +130,54 @@ h1 {
 .director p {
     font-size: 18px;
 }
+
+/* Return Button Styles */
+.return-button {
+    background-color: #4caf50;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.return-button:hover {
+    background-color: #45a049;
+}
+
+/* Full Plot Section */
+.fullplot {
+    margin-bottom: 30px;
+}
+
+.fullplot h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.fullplot p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #dddddd;
+}
+
+/* Additional Info Section */
+.additional-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #bbbbbb;
+}
+
+.additional-info .detail-item {
+    background-color: #2b3a3b;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}

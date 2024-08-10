@@ -10,6 +10,9 @@
 
 <body>
     <div class="container">
+        <!-- Return Button -->
+        <button class="return-button" onclick="goBack()">Return to Search Results</button>
+
         <div class="movie-details">
             <div class="movie-poster">
                 <img src="{{ movie.poster }}" alt="{{ movie.title }} poster">
@@ -20,6 +23,13 @@
                 </div>
                 <h1>{{ movie.title }}</h1>
                 <p class="description">{{ movie.description }}</p>
+
+                <!-- Full Plot Section -->
+                <div class="fullplot">
+                    <h3>Full Plot</h3>
+                    <p>{{ movie.fullplot }}</p>
+                </div>
+
                 <div class="genres">
                     {% for genre in movie.genres %}
                     <span class="genre">{{ genre }}</span>
@@ -29,6 +39,10 @@
                     <span class="detail-item">{{ movie.year }}</span>
                     <span class="detail-item">{{ movie.country }}</span>
                     <span class="detail-item">{{ movie.language }}</span>
+                </div>
+                <div class="additional-info">
+                    <span class="detail-item"><strong>Writer:</strong> {{ movie.writer }}</span>
+                    <span class="detail-item"><strong>IMDb Rating:</strong> {{ movie.imdbRating }}</span>
                 </div>
                 <div class="cast-crew">
                     <div class="cast">
@@ -47,6 +61,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Function to go back to the search results page
+        function goBack() {
+            // This will use the browser's history to return to the previous page with the search filters intact
+            window.history.back();
+        }
+    </script>
 </body>
 
 </html>
