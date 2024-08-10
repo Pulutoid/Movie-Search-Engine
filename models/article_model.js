@@ -120,7 +120,8 @@ async function searchMovies(filters, offset = 0, limit = 100) {
   }
 
   if (filters.genres) {
-    filters.genres.forEach((genre) => {
+    const genres = Array.isArray(filters.genres) ? filters.genres : [filters.genres];
+    genres.forEach((genre) => {
       query += ' AND genre LIKE ?';
       params.push(`%${genre}%`);
     });
@@ -187,7 +188,8 @@ async function countMovies(filters = {}) {
   }
 
   if (filters.genres) {
-    filters.genres.forEach((genre) => {
+    const genres = Array.isArray(filters.genres) ? filters.genres : [filters.genres];
+    genres.forEach((genre) => {
       query += ' AND genre LIKE ?';
       params.push(`%${genre}%`);
     });

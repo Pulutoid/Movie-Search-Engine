@@ -211,7 +211,7 @@ async function mainIndexHtml() {
     }
   });
 
-  // Route to handle adding a favorite movie
+  // POST route to handle adding a movie to favorites
   app.post('/addToFavorites', async (req, res) => {
     try {
       const profileID = req.cookies.profileID;
@@ -221,7 +221,7 @@ async function mainIndexHtml() {
         return res.status(400).send("Bad Request: Profile ID and Movie ID are required");
       }
 
-      await articleModel.addFavoriteMovie(profileID, movieID);
+      await articleModel.addToFavorites(profileID, movieID);
 
       res.send("Movie added to favorites successfully!");
     } catch (error) {
