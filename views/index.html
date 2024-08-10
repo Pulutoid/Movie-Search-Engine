@@ -10,137 +10,159 @@
 </head>
 
 <body>
-  <div class="container">
-    <!-- Unified Search Section -->
-    <form action="/search" method="GET" class="search-section">
-      <input type="text" name="title" placeholder="Search for movies..." value="{{ query.title | default('') }}" />
-
-      <!-- Genre Checkboxes -->
-      <div class="filter-group">
-        <h4>Select Genres</h4>
-        <div class="btn-group vertical">
-          {% set selectedGenres = query.genres if query.genres else [] %}
-          {% if selectedGenres is not iterable %}
-          {% set selectedGenres = [selectedGenres] %}
-          {% endif %}
-          <label class="{% if 'Short' in selectedGenres %}selected{% endif %}">
-            Short
-            <input type="checkbox" name="genres" value="Short" {% if 'Short' in selectedGenres %}checked{% endif %} />
-          </label>
-          <label class="{% if 'Animation' in selectedGenres %}selected{% endif %}">
-            Animation
-            <input type="checkbox" name="genres" value="Animation" {% if 'Animation' in selectedGenres %}checked{% endif
-              %} />
-          </label>
-          <label class="{% if 'Documentary' in selectedGenres %}selected{% endif %}">
-            Documentary
-            <input type="checkbox" name="genres" value="Documentary" {% if 'Documentary' in selectedGenres %}checked{%
-              endif %} />
-          </label>
-          <label class="{% if 'Comedy' in selectedGenres %}selected{% endif %}">
-            Comedy
-            <input type="checkbox" name="genres" value="Comedy" {% if 'Comedy' in selectedGenres %}checked{% endif %} />
-          </label>
-          <label class="{% if 'Drama' in selectedGenres %}selected{% endif %}">
-            Drama
-            <input type="checkbox" name="genres" value="Drama" {% if 'Drama' in selectedGenres %}checked{% endif %} />
-          </label>
-          <label class="{% if 'Action' in selectedGenres %}selected{% endif %}">
-            Action
-            <input type="checkbox" name="genres" value="Action" {% if 'Action' in selectedGenres %}checked{% endif %} />
-          </label>
-          <label class="{% if 'Horror' in selectedGenres %}selected{% endif %}">
-            Horror
-            <input type="checkbox" name="genres" value="Horror" {% if 'Horror' in selectedGenres %}checked{% endif %} />
-          </label>
-          <label class="{% if 'Sci-Fi' in selectedGenres %}selected{% endif %}">
-            Sci-Fi
-            <input type="checkbox" name="genres" value="Sci-Fi" {% if 'Sci-Fi' in selectedGenres %}checked{% endif %} />
-          </label>
-          <label class="{% if 'Romance' in selectedGenres %}selected{% endif %}">
-            Romance
-            <input type="checkbox" name="genres" value="Romance" {% if 'Romance' in selectedGenres %}checked{% endif
-              %} />
-          </label>
-          <label class="{% if 'Thriller' in selectedGenres %}selected{% endif %}">
-            Thriller
-            <input type="checkbox" name="genres" value="Thriller" {% if 'Thriller' in selectedGenres %}checked{% endif
-              %} />
-          </label>
-        </div>
+  <div class="main-layout">
+    <div class="left-menu">
+      <div class="menu-logo">
+        <img src="path_to_logo_image" alt="Movie Search Engine" class="menu-logo-image">
       </div>
-
-      <!-- Year Range -->
-      <div class="filter-group">
-        <h4>Select Year Range</h4>
-        <div class="input-group horizontal">
-          <input type="number" name="minYear" placeholder="Min Year" class="year-input"
-            value="{{ query.minYear | default('') }}" />
-          <input type="number" name="maxYear" placeholder="Max Year" class="year-input"
-            value="{{ query.maxYear | default('') }}" />
-        </div>
-      </div>
-
-      <!-- IMDb Rating Buttons -->
-      <div class="filter-group">
-        <h4>Select IMDb Rating</h4>
-        <div class="btn-group horizontal">
-          <button class="btn filter-btn" type="button" onclick="setRating(7, 10)">7-10</button>
-          <button class="btn filter-btn" type="button" onclick="setRating(5, 7)">5-7</button>
-          <button class="btn filter-btn" type="button" onclick="setRating(0, 5)">0-5</button>
-        </div>
-        <input type="hidden" name="minRating" id="minRating" value="{{ query.minRating | default('') }}" />
-        <input type="hidden" name="maxRating" id="maxRating" value="{{ query.maxRating | default('') }}" />
-      </div>
-
-      <!-- Other Attribute Inputs -->
-      <div class="filter-group">
-        <h4>Select Other Attributes</h4>
-        <div class="input-group horizontal">
-          <input type="text" name="director" placeholder="Director Name" class="attribute-input"
-            value="{{ query.director | default('') }}" />
-          <input type="text" name="cast" placeholder="Cast Member" class="attribute-input"
-            value="{{ query.cast | default('') }}" />
-          <input type="text" name="country" placeholder="Country" class="attribute-input"
-            value="{{ query.country | default('') }}" />
-          <input type="text" name="language" placeholder="Language" class="attribute-input"
-            value="{{ query.language | default('') }}" />
-        </div>
-      </div>
-
-      <!-- Unified Search Button -->
-      <div class="text-center">
-        <button type="submit" class="btn btn-outline-light">Search</button>
-      </div>
-    </form>
-
-    <!-- Movie Grid Section -->
-    <h1>Top Recommendations</h1>
-    <div class="movie-grid">
-      {% for movie in movieSearchResult %}
-      <div class="grid-item">
-        <a href="/movie?id={{ movie.id }}">
-          <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" />
-          <div class="hover-title">{{ movie.title }}</div>
+      <nav class="menu-items">
+        <a href="#" class="menu-item">
+          <i class="fas fa-home"></i> Home
         </a>
+        <a href="#" class="menu-item">
+          <i class="fas fa-search"></i> Search
+        </a>
+      </nav>
+      <div class="profile-indicator">
+        <img src="path_to_profile_image" alt="Profile Image" class="profile-image">
       </div>
-      {% endfor %}
     </div>
 
+    <div class="container">
+      <!-- Unified Search Section -->
+      <form action="/search" method="GET" class="search-section">
+        <input type="text" name="title" placeholder="Search for movies..." value="{{ query.title | default('') }}" />
 
-    <!-- Pagination Controls -->
-    <div class="pagination">
-      {% if page > 1 %}
-      <a href="?{% for key, value in query %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page - 1 }}"
-        class="pagination-prev">Previous</a>
-      {% endif %}
+        <!-- Genre Checkboxes -->
+        <div class="filter-group">
+          <h4>Select Genres</h4>
+          <div class="btn-group vertical">
+            {% set selectedGenres = query.genres if query.genres else [] %}
+            {% if selectedGenres is not iterable %}
+            {% set selectedGenres = [selectedGenres] %}
+            {% endif %}
+            <label class="{% if 'Short' in selectedGenres %}selected{% endif %}">
+              Short
+              <input type="checkbox" name="genres" value="Short" {% if 'Short' in selectedGenres %}checked{% endif %} />
+            </label>
+            <label class="{% if 'Animation' in selectedGenres %}selected{% endif %}">
+              Animation
+              <input type="checkbox" name="genres" value="Animation" {% if 'Animation' in selectedGenres %}checked{%
+                endif %} />
+            </label>
+            <label class="{% if 'Documentary' in selectedGenres %}selected{% endif %}">
+              Documentary
+              <input type="checkbox" name="genres" value="Documentary" {% if 'Documentary' in selectedGenres %}checked{%
+                endif %} />
+            </label>
+            <label class="{% if 'Comedy' in selectedGenres %}selected{% endif %}">
+              Comedy
+              <input type="checkbox" name="genres" value="Comedy" {% if 'Comedy' in selectedGenres %}checked{% endif
+                %} />
+            </label>
+            <label class="{% if 'Drama' in selectedGenres %}selected{% endif %}">
+              Drama
+              <input type="checkbox" name="genres" value="Drama" {% if 'Drama' in selectedGenres %}checked{% endif %} />
+            </label>
+            <label class="{% if 'Action' in selectedGenres %}selected{% endif %}">
+              Action
+              <input type="checkbox" name="genres" value="Action" {% if 'Action' in selectedGenres %}checked{% endif
+                %} />
+            </label>
+            <label class="{% if 'Horror' in selectedGenres %}selected{% endif %}">
+              Horror
+              <input type="checkbox" name="genres" value="Horror" {% if 'Horror' in selectedGenres %}checked{% endif
+                %} />
+            </label>
+            <label class="{% if 'Sci-Fi' in selectedGenres %}selected{% endif %}">
+              Sci-Fi
+              <input type="checkbox" name="genres" value="Sci-Fi" {% if 'Sci-Fi' in selectedGenres %}checked{% endif
+                %} />
+            </label>
+            <label class="{% if 'Romance' in selectedGenres %}selected{% endif %}">
+              Romance
+              <input type="checkbox" name="genres" value="Romance" {% if 'Romance' in selectedGenres %}checked{% endif
+                %} />
+            </label>
+            <label class="{% if 'Thriller' in selectedGenres %}selected{% endif %}">
+              Thriller
+              <input type="checkbox" name="genres" value="Thriller" {% if 'Thriller' in selectedGenres %}checked{% endif
+                %} />
+            </label>
+          </div>
+        </div>
 
-      <span>Page {{ page }} of {{ totalPages }}</span>
+        <!-- Year Range -->
+        <div class="filter-group">
+          <h4>Select Year Range</h4>
+          <div class="input-group horizontal">
+            <input type="number" name="minYear" placeholder="Min Year" class="year-input"
+              value="{{ query.minYear | default('') }}" />
+            <input type="number" name="maxYear" placeholder="Max Year" class="year-input"
+              value="{{ query.maxYear | default('') }}" />
+          </div>
+        </div>
 
-      {% if page < totalPages %} <a
-        href="?{% for key, value in query %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page + 1 }}"
-        class="pagination-next">Next</a>
+        <!-- IMDb Rating Buttons -->
+        <div class="filter-group">
+          <h4>Select IMDb Rating</h4>
+          <div class="btn-group horizontal">
+            <button class="btn filter-btn" type="button" onclick="setRating(7, 10)">7-10</button>
+            <button class="btn filter-btn" type="button" onclick="setRating(5, 7)">5-7</button>
+            <button class="btn filter-btn" type="button" onclick="setRating(0, 5)">0-5</button>
+          </div>
+          <input type="hidden" name="minRating" id="minRating" value="{{ query.minRating | default('') }}" />
+          <input type="hidden" name="maxRating" id="maxRating" value="{{ query.maxRating | default('') }}" />
+        </div>
+
+        <!-- Other Attribute Inputs -->
+        <div class="filter-group">
+          <h4>Select Other Attributes</h4>
+          <div class="input-group horizontal">
+            <input type="text" name="director" placeholder="Director Name" class="attribute-input"
+              value="{{ query.director | default('') }}" />
+            <input type="text" name="cast" placeholder="Cast Member" class="attribute-input"
+              value="{{ query.cast | default('') }}" />
+            <input type="text" name="country" placeholder="Country" class="attribute-input"
+              value="{{ query.country | default('') }}" />
+            <input type="text" name="language" placeholder="Language" class="attribute-input"
+              value="{{ query.language | default('') }}" />
+          </div>
+        </div>
+
+        <!-- Unified Search Button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-outline-light">Search</button>
+        </div>
+      </form>
+
+      <!-- Movie Grid Section -->
+      <h1>Top Recommendations</h1>
+      <div class="movie-grid">
+        {% for movie in movieSearchResult %}
+        <div class="grid-item">
+          <a href="/movie?id={{ movie.id }}">
+            <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" />
+            <div class="hover-title">{{ movie.title }}</div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="pagination">
+        {% if page > 1 %}
+        <a href="?{% for key, value in query %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page - 1 }}"
+          class="pagination-prev">Previous</a>
         {% endif %}
+
+        <span>Page {{ page }} of {{ totalPages }}</span>
+
+        {% if page < totalPages %} <a
+          href="?{% for key, value in query %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page + 1 }}"
+          class="pagination-next">Next</a>
+          {% endif %}
+      </div>
     </div>
   </div>
 

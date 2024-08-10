@@ -5,12 +5,85 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  display: flex;
+  height: 100vh;
 }
 
+/* Main Layout */
+.main-layout {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Left Menu Styles */
+.left-menu {
+  width: 300px; /* Fixed width for the left menu */
+  background-color: #407342;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Internal Flexbox for Menu Items */
+.menu-logo {
+  margin-bottom: 40px;
+}
+
+.menu-logo-image {
+  width: 50px;
+  height: auto;
+  transform: rotate(-10deg);
+}
+
+.menu-items {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-item {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-item i {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.menu-item:hover {
+  color: #4caf50;
+}
+
+.profile-indicator {
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+}
+
+/* Container Styles */
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  flex-grow: 1;
+  padding: 20px; /* Narrow margins around the content */
+  overflow-y: auto; /* Scroll content if needed */
 }
 
 /* Search Section */
@@ -195,6 +268,3 @@ h1 {
 .pagination span {
   padding: 10px 15px;
 }
-
-
-
