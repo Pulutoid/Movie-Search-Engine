@@ -4,7 +4,6 @@ const sqlite = require('sqlite'); // Import sqlite to provide async/await API ov
 
 // Open a connection to the SQLite database
 async function openConnectionToDB() {
-  // Open a connection to the database file 'testing database.db3'
   const db = await sqlite.open({
     filename: './testing database.db3', // Path to the SQLite database file
     driver: sqlite3.Database // Specify the database driver
@@ -30,8 +29,6 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
   if (genres) {
     if (typeof genres === 'string') {
       genres = [genres]; // Convert to array if it's a string
-    } else if (!Array.isArray(genres)) {
-      genres = []; // Default to an empty array if undefined or not an array
     }
 
     // Add conditions to match all selected genres
@@ -95,6 +92,18 @@ async function searchMovies({ title, genres, minYear, maxYear, minRating, maxRat
   return movieSearchResult;
 }
 
+// Get a movie by its ID
+async function getMovieById(id) {
+  const db = await openConnectionToDB(); // Open database connection
+
+  // Query to select a movie by ID
+  const query = 'SELECT * FROM MovRec_movie WHERE id = ?';
+  const movie = await db.get(query, id);
+
+  // Return the movie details
+  return movie;
+}
+
 // Count the total number of movies in the database (with optional filters)
 async function countMovies(filters = {}) {
   const db = await openConnectionToDB(); // Open database connection
@@ -111,8 +120,6 @@ async function countMovies(filters = {}) {
   if (filters.genres) {
     if (typeof filters.genres === 'string') {
       filters.genres = [filters.genres]; // Convert to array if it's a string
-    } else if (!Array.isArray(filters.genres)) {
-      filters.genres = []; // Default to an empty array if undefined or not an array
     }
 
     filters.genres.forEach((genre) => {
@@ -162,5 +169,6 @@ async function countMovies(filters = {}) {
 module.exports = {
   openConnectionToDB,
   searchMovies,
-  countMovies
+  countMovies,
+  getMovieById
 };

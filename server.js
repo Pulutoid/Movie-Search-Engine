@@ -50,14 +50,7 @@ async function mainIndexHtml() {
   app.get('/search', async (req, res) => {
     try {
       // Retrieve search parameters from query
-      let { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language, page } = req.query;
-
-      // Ensure genres is always treated as an array
-      if (typeof genres === 'string') {
-        genres = [genres];
-      } else if (!Array.isArray(genres)) {
-        genres = [];
-      }
+      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language, page } = req.query;
 
       // Convert year filters to integers if present
       const filters = {
@@ -89,6 +82,29 @@ async function mainIndexHtml() {
       res.send(nunjucks.render('index.html', { movieSearchResult, page: currentPage, totalPages, query: req.query }));
     } catch (error) {
       console.error("Error fetching movies by search parameters:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // Route for the movie details page
+  app.get('/movie', async (req, res) => {
+    try {
+      const movieId = req.query.id;
+      if (!movieId) {
+        return res.status(400).send("Bad Request: Movie ID is required");
+      }
+
+      // Fetch movie details by ID
+      const movieDetails = await articleModel.getMovieById(movieId);
+
+      if (!movieDetails) {
+        return res.status(404).send("Movie not found");
+      }
+
+      // Render the 'movie.html' template with the movie details
+      res.send(nunjucks.render('movie.html', { movie: movieDetails }));
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
       res.status(500).send("Internal Server Error");
     }
   });

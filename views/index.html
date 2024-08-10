@@ -119,13 +119,14 @@
     <div class="movie-grid">
       {% for movie in movieSearchResult %}
       <div class="grid-item">
-        <a href="{{ movie.poster }}" target="_blank">
+        <a href="/movie?id={{ movie.id }}">
           <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" />
           <div class="hover-title">{{ movie.title }}</div>
         </a>
       </div>
       {% endfor %}
     </div>
+
 
     <!-- Pagination Controls -->
     <div class="pagination">

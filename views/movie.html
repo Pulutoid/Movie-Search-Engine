@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="movie_view.css" />
+    <title>{{ movie.title }} - Movie Details</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="movie-details">
+            <div class="movie-poster">
+                <img src="{{ movie.poster }}" alt="{{ movie.title }} poster">
+            </div>
+            <div class="movie-info">
+                <div class="rating-circle">
+                    <span class="rating-number">{{ movie.imdbrating }}</span>
+                </div>
+                <h1>{{ movie.title }}</h1>
+                <p class="description">{{ movie.description }}</p>
+                <div class="genres">
+                    {% for genre in movie.genres %}
+                    <span class="genre">{{ genre }}</span>
+                    {% endfor %}
+                </div>
+                <div class="details">
+                    <span class="detail-item">{{ movie.year }}</span>
+                    <span class="detail-item">{{ movie.country }}</span>
+                    <span class="detail-item">{{ movie.language }}</span>
+                </div>
+                <div class="cast-crew">
+                    <div class="cast">
+                        <h3>Cast</h3>
+                        <ul>
+                            {% for actor in movie.cast %}
+                            <li>{{ actor }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="director">
+                        <h3>Director</h3>
+                        <p>{{ movie.director }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
