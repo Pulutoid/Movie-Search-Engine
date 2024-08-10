@@ -228,6 +228,8 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  margin-left: 400px;
+  margin-right: 400px;
 }
 
 .grid-item {
