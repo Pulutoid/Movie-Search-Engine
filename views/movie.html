@@ -19,7 +19,15 @@
             </div>
             <div class="movie-info">
                 <div class="rating-circle">
-                    <span class="rating-number">{{ movie.imdbrating }}</span>
+                    <svg viewBox="0 0 36 36" class="circular-chart green">
+                        <path class="circle-bg" d="M18 2.0845
+                               a 15.9155 15.9155 0 0 1 0 31.831
+                               a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" stroke-dasharray="{{ movie.imdbRating * 10 }}, 100" d="M18 2.0845
+                               a 15.9155 15.9155 0 0 1 0 31.831
+                               a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <text x="18" y="20.35" class="rating-number">{{ movie.imdbRating }}</text>
+                    </svg>
                 </div>
                 <h1>{{ movie.title }}</h1>
                 <p class="description">{{ movie.description }}</p>
@@ -42,7 +50,7 @@
                 </div>
                 <div class="additional-info">
                     <span class="detail-item"><strong>Writer:</strong> {{ movie.writer }}</span>
-                    <span class="detail-item"><strong>IMDb Rating:</strong> {{ movie.imdbRating }}</span>
+                    <!-- <span class="detail-item"><strong>IMDb Rating:</strong> {{ movie.imdbRating }}</span> -->
                 </div>
                 <div class="cast-crew">
                     <div class="cast">
@@ -68,7 +76,26 @@
             // This will use the browser's history to return to the previous page with the search filters intact
             window.history.back();
         }
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var circle = document.querySelector('.circle');
+            var radius = circle.r.baseVal.value;
+            var circumference = radius * 2 * Math.PI;
+
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = `${circumference}`;
+
+            function setProgress(percent) {
+                const offset = circumference - percent / 100 * circumference;
+                circle.style.strokeDashoffset = offset;
+            }
+
+            setProgress({{ movie.imdbRating * 10 }});
+    });
     </script>
+
 </body>
 
 </html>

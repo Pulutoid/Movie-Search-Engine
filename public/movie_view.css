@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     background-color: #1c2c2b;
-    color: #ffffff;
+    color: #ececec;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -57,7 +57,7 @@ body {
 
 .rating-number {
     font-size: 32px;
-    color: #ffffff;
+    color: #ececec;
     font-weight: bold;
 }
 
@@ -134,7 +134,7 @@ h1 {
 /* Return Button Styles */
 .return-button {
     background-color: #4caf50;
-    color: #ffffff;
+    color: #ececec;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -181,3 +181,33 @@ h1 {
     margin-bottom: 10px;
     font-weight: bold;
 }
+
+/* Donut Chart Styles */
+.circular-chart {
+    display: block;
+    margin: 10px auto;
+    max-width: 80px;
+    max-height: 80px;
+  }
+  
+  .circle-bg {
+    fill: none;
+    stroke: #4caf50;
+    stroke-width: 3.8;
+  }
+  
+  .circle {
+    fill: none;
+    stroke-width: 4.8;
+    stroke-linecap: round;
+    stroke: #ececec;
+    transition: stroke-dasharray 0.3s ease;
+  }
+  
+  .rating-number {
+    fill: #ececec;
+    font-size: 0.5em;
+    text-anchor: middle;
+    font-weight: bold;
+  }
+  

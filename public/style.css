@@ -1,7 +1,7 @@
 /* General Styles */
 body {
   background-color: #1c2c2b;
-  color: #ffffff;
+  color: #ececec;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ body {
 .left-menu {
   width: 300px; /* Fixed width for the left menu */
   background-color: #407342;
-  color: #ffffff;
+  color: #ececec;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,7 +49,7 @@ body {
 }
 
 .menu-item {
-  color: #ffffff;
+  color: #ececec;
   text-decoration: none;
   font-size: 16px;
   text-align: center;
@@ -76,7 +76,7 @@ body {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ffffff;
+  border: 2px solid #ececec;
 }
 
 /* Container Styles */
@@ -194,9 +194,9 @@ h1 {
   width: calc(50% - 5px);
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #ffffff;
+  border: 1px solid #ececec;
   background-color: #2b3a3b;
-  color: #ffffff;
+  color: #ececec;
   outline: none;
 }
 
@@ -256,7 +256,7 @@ h1 {
   padding: 10px 15px;
   margin: 0 5px;
   background-color: #4caf50;
-  color: #ffffff;
+  color: #ececec;
   text-decoration: none;
   border-radius: 5px;
 }
