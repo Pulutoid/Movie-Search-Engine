@@ -11,8 +11,7 @@
 <body>
     <div class="container">
         <!-- Return Button -->
-        <button class="return-button" onclick="goBack()">Return to Search Results</button>
-
+        <!-- <button class="return-button" onclick="goBack()">Return to Search Results</button> -->
         <div class="movie-details">
             <div class="movie-poster">
                 <img src="{{ movie.poster }}" alt="{{ movie.title }} poster">
@@ -50,7 +49,6 @@
                 </div>
                 <div class="additional-info">
                     <span class="detail-item"><strong>Writer:</strong> {{ movie.writer }}</span>
-                    <!-- <span class="detail-item"><strong>IMDb Rating:</strong> {{ movie.imdbRating }}</span> -->
                 </div>
                 <div class="cast-crew">
                     <div class="cast">
@@ -66,6 +64,12 @@
                         <p>{{ movie.director }}</p>
                     </div>
                 </div>
+
+                <!-- Add to Favorites Button -->
+                <div class="button-container">
+                    <button class="return-button" onclick="goBack()">Return to Search Results</button>
+                    <button class="favorite-button" onclick="addToFavorites('{{ movie.id }}')">Add to Favorites</button>
+                </div>
             </div>
         </div>
     </div>
@@ -73,11 +77,30 @@
     <script>
         // Function to go back to the search results page
         function goBack() {
-            // This will use the browser's history to return to the previous page with the search filters intact
             window.history.back();
         }
 
-
+        // Function to add movie to favorites
+        function addToFavorites(movieID) {
+            fetch('/addToFavorites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ movieID: movieID })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Movie added to favorites successfully!');
+                    } else {
+                        alert('Failed to add movie to favorites.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding movie to favorites:', error);
+                    alert('Error adding movie to favorites.');
+                });
+        }
 
         document.addEventListener('DOMContentLoaded', function () {
             var circle = document.querySelector('.circle');
@@ -93,7 +116,7 @@
             }
 
             setProgress({{ movie.imdbRating * 10 }});
-    });
+        });
     </script>
 
 </body>

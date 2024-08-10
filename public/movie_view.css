@@ -131,21 +131,39 @@ h1 {
     font-size: 18px;
 }
 
-/* Return Button Styles */
-.return-button {
-    background-color: #4caf50;
-    color: #ececec;
+/* Button Styles */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.return-button,
+.favorite-button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-bottom: 20px;
     transition: background-color 0.3s ease;
+}
+
+.return-button {
+    background-color: #4caf50;
+    color: #ececec;
 }
 
 .return-button:hover {
     background-color: #45a049;
+}
+
+.favorite-button {
+    background-color: #FFD700;
+    color: #1c2c2b;
+}
+
+.favorite-button:hover {
+    background-color: #FFC107;
 }
 
 /* Full Plot Section */
@@ -188,26 +206,25 @@ h1 {
     margin: 10px auto;
     max-width: 80px;
     max-height: 80px;
-  }
-  
-  .circle-bg {
+}
+
+.circle-bg {
     fill: none;
     stroke: #4caf50;
     stroke-width: 3.8;
-  }
-  
-  .circle {
+}
+
+.circle {
     fill: none;
     stroke-width: 4.8;
     stroke-linecap: round;
     stroke: #ececec;
     transition: stroke-dasharray 0.3s ease;
-  }
-  
-  .rating-number {
+}
+
+.rating-number {
     fill: #ececec;
     font-size: 0.5em;
     text-anchor: middle;
     font-weight: bold;
-  }
-  
+}

@@ -48,9 +48,12 @@ async function getProfileById(profileID) {
   const query = `SELECT * FROM profiles WHERE profileID = ?`;
   const profile = await db.get(query, profileID);
 
-  // Ensure favouriteFilters is returned as an array
+  // Ensure favouriteFilters and favouriteMovies are returned as arrays
   if (profile && profile.favouriteFilters) {
     profile.favouriteFilters = profile.favouriteFilters.split(',');
+  }
+  if (profile && profile.favouriteMovies) {
+    profile.favouriteMovies = profile.favouriteMovies.split(',');
   }
 
   return profile;
@@ -65,6 +68,27 @@ async function updateProfile({ profileID, name, birthYear, picture, favouriteFil
                  WHERE profileID = ?`;
 
   await db.run(query, [name, birthYear, picture, favouriteFilters.join(','), profileID]);
+}
+
+// Function to add a favorite movie to the profile
+async function addFavoriteMovie(profileID, movieID) {
+  const db = await openConnectionToDB();
+
+  // Get the current favorite movies for the profile
+  const profile = await getProfileById(profileID);
+  let favouriteMovies = profile.favouriteMovies || [];
+
+  // Add the new movie ID if it's not already in the list
+  if (!favouriteMovies.includes(movieID)) {
+    favouriteMovies.push(movieID);
+  }
+
+  // Update the profile with the new favorite movies list
+  const query = `UPDATE profiles 
+                 SET favouriteMovies = ?
+                 WHERE profileID = ?`;
+
+  await db.run(query, [favouriteMovies.join(','), profileID]);
 }
 
 // Function to get all profiles from the database
@@ -238,5 +262,6 @@ module.exports = {
   getMovieById,
   getProfileById,
   updateProfile,
-  getAllProfiles // Ensure this is exported
+  addFavoriteMovie, // Export the new function
+  getAllProfiles
 };
