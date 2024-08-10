@@ -9,116 +9,56 @@
 </head>
 
 <body>
-    <div class="edit-container">
+    <div class="signup-container">
         <div class="left-side">
             <div class="logo">
                 <img src="path_to_logo_image" alt="Movie Search Engine Logo" class="logo-image">
                 <h1>Edit Profile</h1>
             </div>
-            <form id="retrieveForm">
-                <input type="text" id="profileID" name="profileID" placeholder="Enter Profile ID" required>
-                <button type="button" id="retrieveProfile">Retrieve Profile</button>
-            </form>
-        </div>
-
-        <div class="right-side" id="profileFormContainer" style="display:none;">
-            <form id="editForm" action="/edit" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="profileID" id="hiddenProfileID">
-                <div class="profile-picture">
-                    <div class="profile-pic-container">
-                        <img src="path_to_profile_placeholder" alt="Profile Picture" class="profile-pic"
-                            id="profilePicPreview">
-                        <label for="profilePic" class="edit-icon">✏️ Edit</label>
-                        <input type="file" id="profilePic" name="picture" accept="image/*" style="display:none;">
-                    </div>
+            <div class="profile-picture">
+                <div class="profile-pic-container">
+                    <img src="{{ profile.picture }}" alt="Profile Picture" class="profile-pic" id="profilePicPreview">
+                    <label for="profilePic" class="edit-icon">✏️ Edit</label>
+                    <input type="file" id="profilePic" name="picture" accept="image/*" style="display:none;">
                 </div>
-                <input type="text" name="name" id="name" placeholder="Name" required>
-                <input type="text" name="birth_year" id="birthYear" placeholder="Birth Year" required>
+            </div>
+            <form id="editForm" action="/edit" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="profileID" value="{{ profile.profileID }}">
+                <input type="text" name="name" placeholder="Name" value="{{ profile.name }}" required>
+                <input type="text" name="birth_year" placeholder="Birth Year" value="{{ profile.birthYear }}" required>
                 <div class="genre-selection">
                     <h2>Favourite Genres</h2>
+                    {% set favouriteFilters = profile.favouriteFilters if profile.favouriteFilters else [] %}
+                    {% if not favouriteFilters is iterable %}
+                    {% set favouriteFilters = [favouriteFilters] %}
+                    {% endif %}
+
+                    {% set allGenres = ['Art', 'War', 'Crime', 'Comedy', 'Family', 'Action', 'Animation', 'Drama',
+                    'Horror', 'Adventure', 'Musical', 'Romance', 'Mystery', 'Fiction', 'Documentary'] %}
+
+                    {% for genre in allGenres %}
                     <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Art"> Art
+                        <input type="checkbox" name="favouriteFilters" value="{{ genre }}" {% if genre in
+                            favouriteFilters %}checked{% endif %}> {{ genre }}
                     </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="War"> War
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Crime"> Crime
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Comedy"> Comedy
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Family"> Family
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Action"> Action
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Animation"> Animation
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Drama"> Drama
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Horror"> Horror
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Adventure"> Adventure
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Musical"> Musical
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Romance"> Romance
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Mystery"> Mystery
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Fiction"> Fiction
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Documentary"> Documentary
-                    </label>
+                    {% endfor %}
                 </div>
-                <button type="submit" class="edit-button">Save Changes</button>
+                <button type="submit" class="signup-button">Save Changes</button>
             </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('retrieveProfile').addEventListener('click', async function () {
-            const profileID = document.getElementById('profileID').value;
-            if (!profileID) return;
+        // Preview selected profile picture
+        const profilePicInput = document.getElementById('profilePic');
+        const profilePicPreview = document.getElementById('profilePicPreview');
 
-            const response = await fetch(`/get-profile?id=${profileID}`);
-            const profile = await response.json();
-
-            if (profile) {
-                document.getElementById('hiddenProfileID').value = profile.profileID;
-                document.getElementById('name').value = profile.name;
-                document.getElementById('birthYear').value = profile.birthYear;
-                document.getElementById('profilePicPreview').src = profile.picture || 'path_to_profile_placeholder';
-
-                // Update checkbox selections
-                const genres = profile.favouriteFilters.split(',');
-                document.querySelectorAll('.genre-label input[type="checkbox"]').forEach(checkbox => {
-                    checkbox.checked = genres.includes(checkbox.value);
-                });
-
-                document.getElementById('profileFormContainer').style.display = 'block';
-            } else {
-                alert('Profile not found');
-            }
-        });
-
-        document.getElementById('profilePic').addEventListener('change', function () {
+        profilePicInput.addEventListener('change', function () {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    document.getElementById('profilePicPreview').src = e.target.result;
+                    profilePicPreview.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }

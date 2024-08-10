@@ -16,11 +16,20 @@
         <img src="path_to_logo_image" alt="Movie Search Engine" class="menu-logo-image">
       </div>
       <nav class="menu-items">
-        <a href="#" class="menu-item">
+        <a href="/" class="menu-item">
           <i class="fas fa-home"></i> Home
         </a>
-        <a href="#" class="menu-item">
+        <a href="/search" class="menu-item">
           <i class="fas fa-search"></i> Search
+        </a>
+        <a href="/signup" class="menu-item">
+          <i class="fas fa-user-plus"></i> Signup
+        </a>
+        <a href="/editProfile" class="menu-item">
+          <i class="fas fa-edit"></i> Edit Profile
+        </a>
+        <a href="/viewProfile" class="menu-item">
+          <i class="fas fa-user"></i> View Profile
         </a>
       </nav>
       <div class="profile-indicator">
@@ -172,7 +181,6 @@
               <input type="checkbox" name="genres" value="Reality-TV" {% if 'Reality-TV' in selectedGenres %}checked{%
                 endif %} />
             </label>
-
           </div>
         </div>
 

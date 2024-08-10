@@ -198,11 +198,18 @@ async function countMovies(filters = {}) {
 }
 
 
+
 // Function to get a profile by ID
 async function getProfileById(profileID) {
   const db = await openConnectionToDB();
   const query = `SELECT * FROM profiles WHERE profileID = ?`;
   const profile = await db.get(query, profileID);
+
+  // Ensure favouriteFilters is returned as an array
+  if (profile && profile.favouriteFilters) {
+    profile.favouriteFilters = profile.favouriteFilters.split(',');
+  }
+
   return profile;
 }
 
@@ -217,13 +224,13 @@ async function updateProfile({ profileID, name, birthYear, picture, favouriteFil
   await db.run(query, [name, birthYear, picture, favouriteFilters, profileID]);
 }
 
-// Export the functions for use in other parts of the application
+// Export functions
 module.exports = {
   openConnectionToDB,
   insertProfile,
   searchMovies,
   countMovies,
   getMovieById,
-  getProfileById,  // Make sure this is exported
+  getProfileById,
   updateProfile
 };
