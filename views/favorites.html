@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="favorites.css">
+    <title>Favorite Movies</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Return Button -->
+        <button class="return-button" onclick="goBack()">Return to Home</button>
+
+        <h1>Your Favorite Movies</h1>
+        <div class="movie-list">
+            {% for movie in favoriteMovies %}
+            <div class="movie-item">
+                <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" class="movie-poster">
+                <div class="movie-info">
+                    <h2>{{ movie.title }}</h2>
+                    <p>{{ movie.description }}</p>
+                    <a href="/movie?id={{ movie.id }}" class="details-button">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Function to go back to the home page
+        function goBack() {
+            window.location.href = "/";
+        }
+    </script>
+</body>
+
+</html>

@@ -158,6 +158,22 @@ async function mainIndexHtml() {
     }
   });
 
+  // Route for the favorites page
+  app.get('/favorites', async (req, res) => {
+    try {
+      const profileID = req.cookies.profileID;
+      if (!profileID) {
+        return res.status(400).send("Bad Request: Profile ID is required");
+      }
+
+      const favoriteMovies = await articleModel.getFavoriteMovies(profileID);
+      res.send(nunjucks.render('favorites.html', { favoriteMovies }));
+    } catch (error) {
+      console.error("Error fetching favorite movies:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
   // Route to handle profile editing
   app.get('/editProfile', async (req, res) => {
     try {
@@ -214,7 +230,6 @@ async function mainIndexHtml() {
     }
   });
 
-
   // Route to get profile by ID (used for profile retrieval)
   app.get('/get-profile', async (req, res) => {
     try {
@@ -266,8 +281,6 @@ async function mainIndexHtml() {
       res.status(500).send("Internal Server Error");
     }
   });
-
-
 
   // Start the server and listen on port 3000
   app.listen(3000, () => {
