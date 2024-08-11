@@ -50,6 +50,43 @@ async function mainIndexHtml() {
     }
   });
 
+  // New route for the homepage
+  app.get('/home', async (req, res) => {
+    try {
+      const profileID = req.cookies.profileID;
+
+      // Fetch favorite movies
+      let favoriteMovies = await articleModel.getFavoriteMovies(profileID);
+
+      // Pick up to five random movies from favorites
+      let featuredMovies = [];
+      if (favoriteMovies.length > 0) {
+        while (featuredMovies.length < 5 && favoriteMovies.length > 0) {
+          const randomIndex = Math.floor(Math.random() * favoriteMovies.length);
+          featuredMovies.push(favoriteMovies.splice(randomIndex, 1)[0]);
+        }
+      }
+
+      // Fetch all movies
+      const allMovies = await articleModel.searchMovies({}, 0, 1000); // Fetch a large number to have enough for randomness
+
+      // Pick 5 random movies from the entire collection
+      let recommendedMovies = [];
+      if (allMovies.length > 0) {
+        while (recommendedMovies.length < 5 && allMovies.length > 0) {
+          const randomIndex = Math.floor(Math.random() * allMovies.length);
+          recommendedMovies.push(allMovies.splice(randomIndex, 1)[0]);
+        }
+      }
+
+      // Render the home.html template with the movies
+      res.send(nunjucks.render('home.html', { featuredMovies, recommendedMovies }));
+    } catch (error) {
+      console.error("Error fetching homepage movies:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
   // Route for advanced search with various filters
   app.get('/search', async (req, res) => {
     try {

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="homepage.css" />
+    <title>User Homepage</title>
+</head>
+
+<body>
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <div class="left-menu">
+            <div class="menu-logo">
+                <img src="path_to_logo_image" alt="Movie Search Engine" class="menu-logo-image">
+            </div>
+            <nav class="menu-items">
+                <a href="/" class="menu-item">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/search" class="menu-item">
+                    <i class="fas fa-search"></i> Search
+                </a>
+                <a href="/viewProfile" class="menu-item">
+                    <i class="fas fa-user"></i> View Profile
+                </a>
+                <a href="/editProfile" class="menu-item">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </a>
+                <a href="/favorites" class="menu-item">
+                    <i class="fas fa-star"></i> Favorites
+                </a>
+                <a href="/signup" class="menu-item">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
+                <a href="/switchProfile" class="menu-item">
+                    <i class="fas fa-users"></i> Switch Profile
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Watch Again Section -->
+            <h2>Watch Again</h2>
+            <section class="featured-movies">
+                {% for movie in featuredMovies %}
+                <div class="featured-movie">
+                    <div class="movie-poster">
+                        <img src="{{ movie.poster }}" alt="{{ movie.title }} poster">
+                    </div>
+                    <div class="movie-info">
+                        <div class="rating-circle">
+                            <svg viewBox="0 0 36 36" class="circular-chart green">
+                                <path class="circle-bg" d="M18 2.0845
+                                       a 15.9155 15.9155 0 0 1 0 31.831
+                                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="circle" stroke-dasharray="{{ movie.imdbRating * 10 }}, 100" d="M18 2.0845
+                                       a 15.9155 15.9155 0 0 1 0 31.831
+                                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <text x="18" y="20.35" class="rating-number">{{ movie.imdbRating }}</text>
+                            </svg>
+                        </div>
+
+                        <h2>{{ movie.title }}</h2>
+                        <p class="description">{{ movie.description }}</p>
+
+                        <div class="genres">
+                            {% for genre in movie.genres %}
+                            <span class="genre">{{ genre }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="details">
+                            <span class="detail-item">{{ movie.year }}</span>
+                            <span class="detail-item">{{ movie.country }}</span>
+                            <span class="detail-item">{{ movie.language }}</span>
+                        </div>
+                        <div class="additional-info">
+                            <span class="detail-item"><strong>Writer:</strong> {{ movie.writer }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+
+            <!-- Top Action Movies Section -->
+            <section class="top-action">
+                <h2>Recommended For You</h2>
+                <div class="action-movies">
+                    {% for movie in recommendedMovies %}
+                    <div class="movie">
+                        <div class="movie-poster">
+                            <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+                        </div>
+                        <div class="movie-info">
+                            <p>{{ movie.title }}</p>
+                            <span>{{ movie.year }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var circles = document.querySelectorAll('.circle');
+            circles.forEach(function (circle) {
+                var radius = circle.r.baseVal.value;
+                var circumference = radius * 2 * Math.PI;
+
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = `${circumference}`;
+
+                function setProgress(percent) {
+                    const offset = circumference - percent / 100 * circumference;
+                    circle.style.strokeDashoffset = offset;
+                }
+
+                setProgress(circle.getAttribute('data-rating'));
+            });
+        });
+    </script>
+</body>
+
+</html>
