@@ -20,26 +20,18 @@
                 <h2>Favourite Genres</h2>
                 <ul>
                     {% if profile.favouriteFilters %}
-                    {% for genre in profile.favouriteFilters.split(',') %}
+                    {% for genre in profile.favouriteFilters %}
                     <li>{{ genre }}</li>
                     {% endfor %}
                     {% else %}
                     <li>No favourite genres listed.</li>
                     {% endif %}
                 </ul>
-                <h2>Favourite Movies</h2>
-                <ul>
-                    {% if profile.favouriteMovies %}
-                    {% for movie in profile.favouriteMovies.split(',') %}
-                    <li>{{ movie }}</li>
-                    {% endfor %}
-                    {% else %}
-                    <li>No favourite movies listed.</li>
-                    {% endif %}
-                </ul>
             </div>
             <div class="profile-footer">
+                <a href="/home" class="return-button">Return to Homepage</a>
                 <a href="/editProfile?id={{ profile.profileID }}" class="edit-profile-button">Edit Profile</a>
+                <a href="/favorites" class="favorites-button">View Favorite Movies</a>
             </div>
         </div>
     </div>

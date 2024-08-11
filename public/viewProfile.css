@@ -67,22 +67,31 @@ body {
     margin-bottom: 10px;
 }
 
+/* Profile Footer */
 .profile-footer {
     margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.edit-profile-button {
-    background-color: #4caf50;
-    color: white;
+.return-button,
+.edit-profile-button,
+.favorites-button {
+    background-color: transparent;
+    color: #ececec;
     padding: 15px 30px;
-    border: none;
+    border: 2px solid #4caf50;
     border-radius: 25px;
     font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.edit-profile-button:hover {
-    background-color: #45a049;
+.return-button:hover,
+.edit-profile-button:hover,
+.favorites-button:hover {
+    background-color: #4caf50;
+    color: white;
 }
