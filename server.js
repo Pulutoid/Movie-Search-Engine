@@ -35,12 +35,27 @@ async function mainIndexHtml() {
   // Route for the home page with pagination
   app.get('/search', async (req, res) => {
     try {
+      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language } = req.query;
+
+      const filters = {
+        title: title || undefined,
+        genres: genres ? (Array.isArray(genres) ? genres : [genres]) : undefined,
+        minYear: minYear || undefined,
+        maxYear: maxYear || undefined,
+        minRating: minRating || undefined,
+        maxRating: maxRating || undefined,
+        director: director || undefined,
+        cast: cast || undefined,
+        country: country || undefined,
+        language: language || undefined,
+      };
+
       const page = parseInt(req.query.page) || 1;
       const moviesPerPage = 100;
       const offset = (page - 1) * moviesPerPage;
 
-      const movieSearchResult = await articleModel.searchMovies({}, offset, moviesPerPage);
-      const totalMovies = await articleModel.countMovies();
+      const movieSearchResult = await articleModel.searchMovies(filters, offset, moviesPerPage);
+      const totalMovies = await articleModel.countMovies(filters);
       const totalPages = Math.ceil(totalMovies / moviesPerPage);
 
       res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages, query: req.query }));
@@ -49,7 +64,6 @@ async function mainIndexHtml() {
       res.status(500).send("Internal Server Error");
     }
   });
-
 
   // Redirect root path to /home
   app.get('/', (req, res) => {
@@ -92,8 +106,6 @@ async function mainIndexHtml() {
       res.status(500).send("Internal Server Error");
     }
   });
-
-  // Route for advanced search with various filters
 
   // Route for the movie details page
   app.get('/movie', async (req, res) => {
