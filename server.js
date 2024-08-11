@@ -33,7 +33,7 @@ async function mainIndexHtml() {
   });
 
   // Route for the home page with pagination
-  app.get('/', async (req, res) => {
+  app.get('/search', async (req, res) => {
     try {
       const page = parseInt(req.query.page) || 1;
       const moviesPerPage = 100;
@@ -48,6 +48,12 @@ async function mainIndexHtml() {
       console.error("Error fetching movies:", error);
       res.status(500).send("Internal Server Error");
     }
+  });
+
+
+  // Redirect root path to /home
+  app.get('/', (req, res) => {
+    res.redirect('/home');
   });
 
   // New route for the homepage
@@ -88,37 +94,6 @@ async function mainIndexHtml() {
   });
 
   // Route for advanced search with various filters
-  app.get('/search', async (req, res) => {
-    try {
-      const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language, page } = req.query;
-
-      const filters = {
-        title,
-        genres,
-        minYear: minYear ? parseInt(minYear) : undefined,
-        maxYear: maxYear ? parseInt(maxYear) : undefined,
-        minRating,
-        maxRating,
-        director,
-        cast,
-        country,
-        language
-      };
-
-      const currentPage = parseInt(page) || 1;
-      const moviesPerPage = 100;
-      const offset = (currentPage - 1) * moviesPerPage;
-
-      const movieSearchResult = await articleModel.searchMovies(filters, offset, moviesPerPage);
-      const totalMovies = await articleModel.countMovies(filters);
-      const totalPages = Math.ceil(totalMovies / moviesPerPage);
-
-      res.send(nunjucks.render('index.html', { movieSearchResult, page: currentPage, totalPages, query: req.query }));
-    } catch (error) {
-      console.error("Error fetching movies by search parameters:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
 
   // Route for the movie details page
   app.get('/movie', async (req, res) => {
