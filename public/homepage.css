@@ -1,8 +1,8 @@
 /* General Styles */
 body {
-    background-color: #1c2c2b;
-    color: #ececec;
     font-family: Arial, sans-serif;
+    background-color: #1D2C20;
+    color: white;
     margin: 0;
     padding: 0;
     display: flex;
@@ -18,23 +18,27 @@ body {
 
 /* Sidebar */
 .left-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg, rgba(88.26, 126.53, 95.92, 0.70) 0%, rgba(17.11, 24.53, 18.60, 0.70) 100%);
     width: 20vw;
-    background-color: #407342;
-    color: #ececec;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 0;
+    padding-top: 2vh;
     flex-shrink: 0;
 }
 
 .menu-logo {
-    margin-bottom: 2.5rem;
+    margin-bottom: 3vh;
+    display: flex;
+    justify-content: center;
 }
 
 .menu-logo-image {
-    width: 3.125rem;
+    width: 10vw;
     height: auto;
     transform: rotate(-10deg);
 }
@@ -44,104 +48,111 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    gap: 2vh;
 }
 
 .menu-item {
-    color: #ececec;
+    width: 100%;
+    color: white;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.5vw;
+    padding: 2vh 0;
     text-align: center;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
 }
 
 .menu-item i {
-    font-size: 1.5rem;
-    margin-bottom: 0.3125rem;
+    margin-right: 0.5vw;
+    font-size: 2vw;
 }
 
 .menu-item:hover {
-    color: #4caf50;
+    background-color: #407342;
+    color: #B5F5C2;
 }
 
 /* Main Content */
 .main-content {
+    margin-left: 20vw;
     flex-grow: 1;
-    padding: 1.25rem;
+    padding: 2vw;
     overflow-y: auto;
 }
 
 /* Featured Movies Section */
 .featured-movies {
     display: flex;
-    flex-direction: row;
-    gap: 0.625rem;
-    margin-bottom: 2.5rem;
     flex-wrap: wrap;
+    gap: 2vw;
+    margin-bottom: 4vh;
+    justify-content: space-between;
 }
 
 .featured-movie {
-    display: flex;
-    gap: 1.25rem;
     background-color: #2b3a3b;
-    padding: 1.25rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
-    width: calc(20% - 0.625rem);
+    padding: 2vw;
+    border-radius: 1vw;
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3);
+    width: calc(20% - 2vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 /* Updated Movie Poster Styles */
 .movie-poster {
-    flex-shrink: 0;
-    width: 12.5vw;
+    width: 100%;
     aspect-ratio: 2 / 3;
-    border-radius: 0.5rem;
+    border-radius: 1vw;
     overflow: hidden;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3);
 }
 
 .movie-poster img {
     width: 100%;
     height: 100%;
-    object-fit: scale-down;
+    object-fit: cover;
 }
 
 .movie-info {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    margin-top: 1vh;
 }
 
 /* Updated Rating Circle */
 .rating-circle {
-    width: 5vw;
-    height: 5vw;
+    width: 4vw;
+    height: 4vw;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.25rem;
+    margin-bottom: 2vh;
 }
 
 .circular-chart {
     display: block;
     margin: 0 auto;
-    max-width: 5vw;
-    max-height: 5vw;
+    max-width: 4vw;
+    max-height: 4vw;
 }
 
 .circle-bg {
     fill: none;
     stroke: #4caf50;
-    stroke-width: 0.2375vw;
+    stroke-width: 0.2vw;
 }
 
 .circle {
     fill: none;
-    stroke-width: 0.3vw;
+    stroke-width: 0.25vw;
     stroke-linecap: round;
     stroke: #ececec;
     transition: stroke-dasharray 0.3s ease;
@@ -149,19 +160,19 @@ body {
 
 .rating-number {
     fill: #ececec;
-    font-size: 1rem;
+    font-size: 0.75vw;
     text-anchor: middle;
     font-weight: bold;
 }
 
 h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0.625rem;
+    font-size: 1.5vw;
+    margin-bottom: 1.5vh;
 }
 
 .description {
-    font-size: 0.875rem;
-    margin-bottom: 0.625rem;
+    font-size: 1vw;
+    margin-bottom: 1.5vh;
     line-height: 1.5;
 }
 
@@ -169,59 +180,38 @@ h2 {
 .details,
 .additional-info {
     display: flex;
-    gap: 0.625rem;
+    gap: 1vw;
     flex-wrap: wrap;
 }
 
 .genre,
 .detail-item {
     background-color: #3c4a4b;
-    padding: 0.3125rem 0.625rem;
-    border-radius: 0.3125rem;
-    font-size: 0.75rem;
+    padding: 0.5vw 1vw;
+    border-radius: 0.5vw;
+    font-size: 1vw;
     color: #bbbbbb;
-}
-
-.cast-crew {
-    display: flex;
-    gap: 1.25rem;
-}
-
-.cast h3,
-.director h3 {
-    font-size: 1rem;
-    margin-bottom: 0.3125rem;
-}
-
-.cast ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.cast li {
-    font-size: 0.875rem;
 }
 
 /* Top Action Movies Section */
 .top-action {
-    margin-top: 1.25rem;
+    margin-top: 2vh;
 }
 
 .top-action h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.25rem;
+    font-size: 2vw;
+    margin-bottom: 2vh;
 }
 
 .action-movies {
     display: flex;
-    gap: 0.125rem;
     flex-wrap: wrap;
+    gap: 2vw;
     justify-content: space-between;
 }
 
 .movie {
-    width: 10vw;
+    width: 15%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -230,32 +220,19 @@ h2 {
 
 .movie img {
     width: 100%;
-    border-radius: 0.5rem;
-    margin-bottom: 0.625rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
+    border-radius: 1vw;
+    margin-bottom: 1vh;
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3);
 }
 
 .movie-info p {
-    font-size: 0.875rem;
-    margin: 0.3125rem 0;
+    font-size: 1vw;
+    margin: 1vh 0;
 }
 
 .movie-info span {
-    font-size: 0.75rem;
+    font-size: 0.75vw;
     color: #999999;
-}
-
-/* Settings Button */
-.settings {
-    margin-top: 1.25rem;
-}
-
-.settings-button {
-    background-color: transparent;
-    border: none;
-    color: #ececec;
-    font-size: 1.5rem;
-    cursor: pointer;
 }
 
 /* Responsive Adjustments */
@@ -271,13 +248,14 @@ h2 {
     }
 
     .main-content {
-        padding: 1rem;
+        padding: 2vh;
+        margin-left: 0;
     }
 
     .featured-movie,
     .movie {
         width: 100%;
-        margin-bottom: 1.25rem;
+        margin-bottom: 2vh;
     }
 
     .action-movies {

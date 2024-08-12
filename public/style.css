@@ -1,7 +1,7 @@
 /* General Styles */
 body {
-  background-color: #1c2c2b;
-  color: #ececec;
+  background-color: #1D2C20;
+  color: white;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ body {
 .left-menu {
   width: 20vw; /* Relative width for the left menu */
   background-color: #407342;
-  color: #ececec;
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,7 +49,7 @@ body {
 }
 
 .menu-item {
-  color: #ececec;
+  color: white;
   text-decoration: none;
   font-size: 1rem;
   text-align: center;
@@ -64,7 +64,7 @@ body {
 }
 
 .menu-item:hover {
-  color: #4caf50;
+  color: #B5F5C2;
 }
 
 .profile-indicator {
@@ -76,7 +76,7 @@ body {
   height: 3.125rem;
   border-radius: 50%;
   object-fit: cover;
-  border: 0.125rem solid #ececec;
+  border: 0.125rem solid white;
 }
 
 /* Container Styles */
@@ -111,7 +111,7 @@ body {
   padding: 0.75rem 1.5625rem;
   border-radius: 1.5625rem;
   border: none;
-  background-color: #4caf50;
+  background-color: #407342;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -172,7 +172,7 @@ h1 {
 
 /* Hover effect with background color change */
 .btn-group.vertical label:hover {
-  background-color: #4caf50;
+  background-color: #407342;
   transform: scale(1.05);
 }
 
@@ -261,8 +261,8 @@ h1 {
 .pagination a {
   padding: 0.625rem 0.9375rem;
   margin: 0 0.3125rem;
-  background-color: #4caf50;
-  color: #ececec;
+  background-color: #407342;
+  color: white;
   text-decoration: none;
   border-radius: 0.3125rem;
 }
@@ -278,39 +278,39 @@ h1 {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .left-menu {
-    width: 25vw;
+      width: 25vw;
   }
 
   .menu-logo {
-    margin-bottom: 1.875rem;
+      margin-bottom: 1.875rem;
   }
 
   .container {
-    padding: 0.9375rem;
+      padding: 0.9375rem;
   }
 
   .search-section {
-    margin-left: 5vw;
-    margin-right: 5vw;
-    max-width: 90vw;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      max-width: 90vw;
   }
 
   .movie-grid {
-    margin-left: 5vw;
-    margin-right: 5vw;
-    max-width: 90vw;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      max-width: 90vw;
   }
 
   .grid-item {
-    width: 20vw;
-    max-width: 120px;
+      width: 20vw;
+      max-width: 120px;
   }
 
   h1 {
-    font-size: 2rem;
+      font-size: 2rem;
   }
 
   .btn-group.vertical {
-    grid-template-columns: repeat(3, 1fr); /* 3 filters per row */
+      grid-template-columns: repeat(3, 1fr); /* 3 filters per row */
   }
 }
