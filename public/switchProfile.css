@@ -7,24 +7,25 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .switch-container {
     width: 80%;
+    max-width: 960px;
     background-color: #2b3a3b;
-    border-radius: 15px;
-    padding: 40px;
+    border-radius: 1rem;
+    padding: 2.5rem;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 .logo {
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 }
 
 .logo-image {
-    width: 100px;
+    width: 6.25rem;
     height: auto;
 }
 
@@ -32,35 +33,52 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .profile-card {
     background-color: #3c4c4d;
-    border-radius: 10px;
-    padding: 20px;
-    width: 200px;
+    border-radius: 0.625rem;
+    padding: 1.25rem;
+    width: 12.5rem;
     text-align: center;
 }
 
 .profile-picture {
-    width: 100px;
-    height: 100px;
+    width: 6.25rem;
+    height: 6.25rem;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 }
 
 .select-button {
     background-color: #4caf50;
     color: white;
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .select-button:hover {
     background-color: #45a049;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .switch-container {
+        padding: 1.25rem;
+    }
+
+    .profile-selection {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-card {
+        width: 100%;
+        margin-bottom: 1.25rem;
+    }
 }

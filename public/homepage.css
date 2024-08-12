@@ -6,35 +6,35 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* Main Layout */
 .main-layout {
     display: flex;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* Sidebar */
 .left-menu {
-    width: 300px;
+    width: 20vw;
     background-color: #407342;
     color: #ececec;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 0;
+    padding: 1.25rem 0;
     flex-shrink: 0;
 }
 
 .menu-logo {
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 }
 
 .menu-logo-image {
-    width: 50px;
+    width: 3.125rem;
     height: auto;
     transform: rotate(-10deg);
 }
@@ -44,13 +44,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .menu-item {
     color: #ececec;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -58,8 +58,8 @@ body {
 }
 
 .menu-item i {
-    font-size: 24px;
-    margin-bottom: 5px;
+    font-size: 1.5rem;
+    margin-bottom: 0.3125rem;
 }
 
 .menu-item:hover {
@@ -69,7 +69,7 @@ body {
 /* Main Content */
 .main-content {
     flex-grow: 1;
-    padding: 20px;
+    padding: 1.25rem;
     overflow-y: auto;
 }
 
@@ -77,29 +77,29 @@ body {
 .featured-movies {
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    margin-bottom: 40px;
+    gap: 0.625rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
 }
 
 .featured-movie {
     display: flex;
-    gap: 20px;
+    gap: 1.25rem;
     background-color: #2b3a3b;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: calc(20% - 20px); /* Adjust to fit 5 movies in a row */
-    height: 50%;
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
+    width: calc(20% - 0.625rem);
 }
 
 /* Updated Movie Poster Styles */
 .movie-poster {
-    flex-shrink: 0; /* Prevent the poster from shrinking */
-    width: 180px; /* Set a fixed width for the poster */
-    aspect-ratio: 2 / 3; /* Maintain a standard movie poster aspect ratio */
-    border-radius: 8px;
+    flex-shrink: 0;
+    width: 12.5vw;
+    aspect-ratio: 2 / 3;
+    border-radius: 0.5rem;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 .movie-poster img {
@@ -117,31 +117,31 @@ body {
 
 /* Updated Rating Circle */
 .rating-circle {
-    width: 80px;
-    height: 80px;
+    width: 5vw;
+    height: 5vw;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 }
 
 .circular-chart {
     display: block;
     margin: 0 auto;
-    max-width: 80px;
-    max-height: 80px;
+    max-width: 5vw;
+    max-height: 5vw;
 }
 
 .circle-bg {
     fill: none;
     stroke: #4caf50;
-    stroke-width: 3.8;
+    stroke-width: 0.2375vw;
 }
 
 .circle {
     fill: none;
-    stroke-width: 4.8;
+    stroke-width: 0.3vw;
     stroke-linecap: round;
     stroke: #ececec;
     transition: stroke-dasharray 0.3s ease;
@@ -149,19 +149,19 @@ body {
 
 .rating-number {
     fill: #ececec;
-    font-size: 18px;
+    font-size: 1rem;
     text-anchor: middle;
     font-weight: bold;
 }
 
 h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
+    font-size: 1.25rem;
+    margin-bottom: 0.625rem;
 }
 
 .description {
-    font-size: 14px;
-    margin-bottom: 10px;
+    font-size: 0.875rem;
+    margin-bottom: 0.625rem;
     line-height: 1.5;
 }
 
@@ -169,28 +169,28 @@ h2 {
 .details,
 .additional-info {
     display: flex;
-    gap: 10px;
+    gap: 0.625rem;
     flex-wrap: wrap;
 }
 
 .genre,
 .detail-item {
     background-color: #3c4a4b;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
+    padding: 0.3125rem 0.625rem;
+    border-radius: 0.3125rem;
+    font-size: 0.75rem;
     color: #bbbbbb;
 }
 
 .cast-crew {
     display: flex;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .cast h3,
 .director h3 {
-    font-size: 16px;
-    margin-bottom: 5px;
+    font-size: 1rem;
+    margin-bottom: 0.3125rem;
 }
 
 .cast ul {
@@ -200,28 +200,28 @@ h2 {
 }
 
 .cast li {
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 /* Top Action Movies Section */
 .top-action {
-    margin-top: 20px;
+    margin-top: 1.25rem;
 }
 
 .top-action h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .action-movies {
     display: flex;
-    gap: 2px;
+    gap: 0.125rem;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
 .movie {
-    width: 150px;
+    width: 10vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -230,51 +230,36 @@ h2 {
 
 .movie img {
     width: 100%;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    margin-bottom: 0.625rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 .movie-info p {
-    font-size: 14px;
-    margin: 5px 0;
+    font-size: 0.875rem;
+    margin: 0.3125rem 0;
 }
 
 .movie-info span {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #999999;
 }
 
 /* Settings Button */
 .settings {
-    margin-top: 20px;
+    margin-top: 1.25rem;
 }
 
 .settings-button {
     background-color: transparent;
     border: none;
     color: #ececec;
-    font-size: 24px;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .featured-movie,
-    .movie {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .action-movies {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .menu-logo-image {
-        transform: none;
-    }
-
     .left-menu {
         width: 100%;
         flex-direction: row;
@@ -286,6 +271,21 @@ h2 {
     }
 
     .main-content {
+        padding: 1rem;
+    }
+
+    .featured-movie,
+    .movie {
         width: 100%;
+        margin-bottom: 1.25rem;
+    }
+
+    .action-movies {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-logo-image {
+        transform: none;
     }
 }

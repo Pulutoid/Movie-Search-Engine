@@ -8,7 +8,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* Profile Container */
@@ -23,56 +23,57 @@ body {
 /* Profile Card */
 .profile-card {
     background-color: #2b3a3b;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 40px;
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
+    padding: 2.5rem;
     width: 50%;
+    max-width: 640px;
     text-align: center;
 }
 
 .profile-header {
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
 }
 
 .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: 9.375rem;
+    height: 9.375rem;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 20px;
-    border: 3px solid #ececec;
+    margin-bottom: 1.25rem;
+    border: 0.1875rem solid #ececec;
 }
 
 .profile-header h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
+    font-size: 2.25rem;
+    margin-bottom: 0.625rem;
 }
 
 .profile-content h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .profile-content ul {
     list-style-type: none;
     padding: 0;
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
 }
 
 .profile-content li {
-    font-size: 18px;
+    font-size: 1.125rem;
     background-color: #4b5a5b;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    padding: 0.625rem;
+    border-radius: 0.625rem;
+    margin-bottom: 0.625rem;
 }
 
 /* Profile Footer */
 .profile-footer {
-    margin-top: 30px;
+    margin-top: 1.875rem;
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .return-button,
@@ -80,10 +81,10 @@ body {
 .favorites-button {
     background-color: transparent;
     color: #ececec;
-    padding: 15px 30px;
-    border: 2px solid #4caf50;
-    border-radius: 25px;
-    font-size: 18px;
+    padding: 0.9375rem 1.875rem;
+    border: 0.125rem solid #4caf50;
+    border-radius: 1.5625rem;
+    font-size: 1.125rem;
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -94,4 +95,17 @@ body {
 .favorites-button:hover {
     background-color: #4caf50;
     color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-card {
+        width: 90%;
+        padding: 1.25rem;
+    }
+
+    .profile-footer {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
 }

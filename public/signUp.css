@@ -8,56 +8,58 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* Sign Up Container */
 .signup-container {
     display: flex;
     width: 80%;
+    max-width: 960px;
     height: 70%;
+    max-height: 720px;
     background-color: #2b3a3b;
-    border-radius: 15px;
+    border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 /* Left Side Styles */
 .left-side {
     flex: 1;
     background-color: #2b3a3b;
-    padding: 40px;
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-right: 1px solid #ececec;
+    border-right: 0.0625rem solid #ececec;
 }
 
 .logo {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 }
 
 .logo h1 {
-    font-size: 36px;
-    margin-top: 10px;
+    font-size: 2.25rem;
+    margin-top: 0.625rem;
 }
 
 .profile-picture {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 }
 
 .profile-pic-container {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 6.25rem;
+    height: 6.25rem;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid #ececec;
+    border: 0.125rem solid #ececec;
 }
 
 .profile-pic {
@@ -68,13 +70,13 @@ body {
 
 .edit-icon {
     position: absolute;
-    bottom: -10px;
-    right: -10px;
+    bottom: -0.625rem;
+    right: -0.625rem;
     background-color: #4caf50;
     color: white;
-    padding: 5px;
+    padding: 0.3125rem;
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 0.75rem;
     cursor: pointer;
 }
 
@@ -82,22 +84,22 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .signup-form input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ececec;
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+    border: 0.0625rem solid #ececec;
     background-color: #3c4c4d;
     color: #ececec;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 /* Right Side Styles */
 .right-side {
     flex: 2;
-    padding: 40px;
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,25 +107,25 @@ body {
 }
 
 .right-side h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .genre-selection {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 0.625rem;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
 }
 
 .genre-label {
     background-color: #4b5a5b;
     color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 1.25rem;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
     display: flex;
     align-items: center;
 }
@@ -139,14 +141,48 @@ body {
 .signup-button {
     background-color: #4caf50;
     color: white;
-    padding: 15px 30px;
+    padding: 0.9375rem 1.875rem;
     border: none;
-    border-radius: 25px;
-    font-size: 18px;
+    border-radius: 1.5625rem;
+    font-size: 1.125rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .signup-button:hover {
     background-color: #45a049;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .signup-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-side, .right-side {
+        padding: 1.25rem;
+        border-right: none;
+        border-bottom: 0.0625rem solid #ececec;
+    }
+
+    .right-side h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-pic-container {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .edit-icon {
+        font-size: 0.625rem;
+        padding: 0.25rem;
+    }
+
+    .signup-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
 }
