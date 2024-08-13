@@ -147,6 +147,16 @@ async function searchMovies(filters, offset = 0, limit = 100) {
     params.push(filters.maxRating);
   }
 
+  if (filters.minDuration) {
+    query += ` AND CAST(runtime AS INTEGER) >= ?`;
+    params.push(filters.minDuration);
+  }
+
+  if (filters.maxDuration) {
+    query += ` AND CAST(runtime AS INTEGER) <= ?`;
+    params.push(filters.maxDuration);
+  }
+
   if (filters.director) {
     query += ' AND director LIKE ?';
     params.push(`%${filters.director}%`);
@@ -215,6 +225,16 @@ async function countMovies(filters = {}) {
     params.push(filters.maxRating);
   }
 
+  if (filters.minDuration) {
+    query += ` AND CAST(runtime AS INTEGER) >= ?`;
+    params.push(filters.minDuration);
+  }
+
+  if (filters.maxDuration) {
+    query += ` AND CAST(runtime AS INTEGER) <= ?`;
+    params.push(filters.maxDuration);
+  }
+
   if (filters.director) {
     query += ' AND director LIKE ?';
     params.push(`%${filters.director}%`);
@@ -258,5 +278,5 @@ module.exports = {
   getAllProfiles,
   addToFavorites,
   getMoviesByIds,
-  getFavoriteMovies
+  getFavoriteMovies,
 };

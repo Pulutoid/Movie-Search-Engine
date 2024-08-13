@@ -7,6 +7,114 @@
   <link rel="stylesheet" href="globals.css" />
   <link rel="stylesheet" href="style.css" />
   <title>Movie Search</title>
+  <style>
+    /* Custom Styles for Selected Filters */
+    .filter-group label.selected,
+    .filter-group button.selected {
+      background-color: #4CAF50;
+      /* Green */
+      color: white;
+    }
+
+    .filter-group button {
+      padding: 0.5rem 1rem;
+      margin: 0.2rem 0;
+      border: none;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .filter-group button:hover {
+      background-color: #888;
+    }
+
+    /* Input styling */
+    .year-input,
+    .attribute-input,
+    .filter-range {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .filter-range {
+      width: calc(100% - 1rem);
+    }
+
+    /* Sidebar styles from home.html */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1D2C20;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .left-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, rgba(88.26, 126.53, 95.92, 0.70) 0%, rgba(17.11, 24.53, 18.60, 0.70) 100%);
+      width: 250px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .menu-logo {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .menu-logo img {
+      width: 150px;
+      height: auto;
+      transform: rotate(-10deg);
+    }
+
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .menu-item {
+      width: 100%;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 15px 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s;
+    }
+
+    .menu-item i {
+      margin-right: 10px;
+    }
+
+    .menu-item:hover {
+      background-color: #407342;
+      color: #B5F5C2;
+    }
+
+    .container {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    /* Adjustments to container padding to match the home page */
+    .container {
+      padding: 20px;
+    }
+  </style>
 </head>
 
 <body>
@@ -25,9 +133,6 @@
         <a href="/viewProfile" class="menu-item">
           <i class="fas fa-user"></i> View Profile
         </a>
-        <a href="/editProfile" class="menu-item">
-          <i class="fas fa-edit"></i> Edit Profile
-        </a>
         <a href="/favorites" class="menu-item">
           <i class="fas fa-star"></i> Favorites
         </a>
@@ -35,7 +140,7 @@
           <i class="fas fa-user-plus"></i> Sign Up
         </a>
         <a href="/switchProfile" class="menu-item">
-          <i class="fas fa-users"></i> Switch Profile
+          <i class="fas fa-users"></i> Log in
         </a>
       </nav>
     </div>
@@ -54,134 +159,16 @@
             {% set selectedGenres = [selectedGenres] %}
             {% endif %}
 
-            <label class="{% if 'Documentary' in selectedGenres %}selected{% endif %}">
-              Documentary
-              <input type="checkbox" name="genres" value="Documentary" {% if 'Documentary' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-            <label class="{% if 'Short' in selectedGenres %}selected{% endif %}">
-              Short
-              <input type="checkbox" name="genres" value="Short" {% if 'Short' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'Drama' in selectedGenres %}selected{% endif %}">
-              Drama
-              <input type="checkbox" name="genres" value="Drama" {% if 'Drama' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'Fantasy' in selectedGenres %}selected{% endif %}">
-              Fantasy
-              <input type="checkbox" name="genres" value="Fantasy" {% if 'Fantasy' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Adventure' in selectedGenres %}selected{% endif %}">
-              Adventure
-              <input type="checkbox" name="genres" value="Adventure" {% if 'Adventure' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-            <label class="{% if 'Action' in selectedGenres %}selected{% endif %}">
-              Action
-              <input type="checkbox" name="genres" value="Action" {% if 'Action' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Western' in selectedGenres %}selected{% endif %}">
-              Western
-              <input type="checkbox" name="genres" value="Western" {% if 'Western' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Horror' in selectedGenres %}selected{% endif %}">
-              Horror
-              <input type="checkbox" name="genres" value="Horror" {% if 'Horror' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Animation' in selectedGenres %}selected{% endif %}">
-              Animation
-              <input type="checkbox" name="genres" value="Animation" {% if 'Animation' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-            <label class="{% if 'Comedy' in selectedGenres %}selected{% endif %}">
-              Comedy
-              <input type="checkbox" name="genres" value="Comedy" {% if 'Comedy' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Sci-Fi' in selectedGenres %}selected{% endif %}">
-              Sci-Fi
-              <input type="checkbox" name="genres" value="Sci-Fi" {% if 'Sci-Fi' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Crime' in selectedGenres %}selected{% endif %}">
-              Crime
-              <input type="checkbox" name="genres" value="Crime" {% if 'Crime' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'History' in selectedGenres %}selected{% endif %}">
-              History
-              <input type="checkbox" name="genres" value="History" {% if 'History' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Romance' in selectedGenres %}selected{% endif %}">
-              Romance
-              <input type="checkbox" name="genres" value="Romance" {% if 'Romance' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Sport' in selectedGenres %}selected{% endif %}">
-              Sport
-              <input type="checkbox" name="genres" value="Sport" {% if 'Sport' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'War' in selectedGenres %}selected{% endif %}">
-              War
-              <input type="checkbox" name="genres" value="War" {% if 'War' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'Biography' in selectedGenres %}selected{% endif %}">
-              Biography
-              <input type="checkbox" name="genres" value="Biography" {% if 'Biography' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-            <label class="{% if 'Family' in selectedGenres %}selected{% endif %}">
-              Family
-              <input type="checkbox" name="genres" value="Family" {% if 'Family' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Thriller' in selectedGenres %}selected{% endif %}">
-              Thriller
-              <input type="checkbox" name="genres" value="Thriller" {% if 'Thriller' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Mystery' in selectedGenres %}selected{% endif %}">
-              Mystery
-              <input type="checkbox" name="genres" value="Mystery" {% if 'Mystery' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Music' in selectedGenres %}selected{% endif %}">
-              Music
-              <input type="checkbox" name="genres" value="Music" {% if 'Music' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'Musical' in selectedGenres %}selected{% endif %}">
-              Musical
-              <input type="checkbox" name="genres" value="Musical" {% if 'Musical' in selectedGenres %}checked{% endif
-                %} />
-            </label>
-            <label class="{% if 'Film-Noir' in selectedGenres %}selected{% endif %}">
-              Film-Noir
-              <input type="checkbox" name="genres" value="Film-Noir" {% if 'Film-Noir' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-            <label class="{% if 'Adult' in selectedGenres %}selected{% endif %}">
-              Adult
-              <input type="checkbox" name="genres" value="Adult" {% if 'Adult' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'Talk-Show' in selectedGenres %}selected{% endif %}">
-              Talk-Show
-              <input type="checkbox" name="genres" value="Talk-Show" {% if 'Talk-Show' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-            <label class="{% if 'News' in selectedGenres %}selected{% endif %}">
-              News
-              <input type="checkbox" name="genres" value="News" {% if 'News' in selectedGenres %}checked{% endif %} />
-            </label>
-            <label class="{% if 'Reality-TV' in selectedGenres %}selected{% endif %}">
-              Reality-TV
-              <input type="checkbox" name="genres" value="Reality-TV" {% if 'Reality-TV' in selectedGenres %}checked{%
-                endif %} />
-            </label>
-
+            {% for genre in ['Documentary', 'Short', 'Drama', 'Fantasy', 'Adventure', 'Action', 'Western', 'Horror',
+            'Animation', 'Comedy', 'Sci-Fi', 'Crime', 'History', 'Romance', 'Sport', 'War', 'Biography', 'Family',
+            'Thriller', 'Mystery', 'Music', 'Musical', 'Film-Noir', 'Adult', 'Talk-Show', 'News', 'Reality-TV'] %}
+            <button type="button" class="btn filter-btn {% if genre in selectedGenres %}selected{% endif %}"
+              data-genre="{{ genre }}">
+              {{ genre }}
+              <input type="checkbox" name="genres" value="{{ genre }}" {% if genre in selectedGenres %}checked{% endif
+                %} style="display:none;" />
+            </button>
+            {% endfor %}
           </div>
         </div>
 
@@ -196,16 +183,34 @@
           </div>
         </div>
 
-        <!-- IMDb Rating Buttons -->
+        <!-- IMDb Rating Range -->
         <div class="filter-group">
-          <h4>Select IMDb Rating</h4>
-          <div class="btn-group horizontal">
-            <button class="btn filter-btn" type="button" onclick="setRating(7, 10)">7-10</button>
-            <button class="btn filter-btn" type="button" onclick="setRating(5, 7)">5-7</button>
-            <button class="btn filter-btn" type="button" onclick="setRating(0, 5)">0-5</button>
+          <h4>Select IMDb Rating Range</h4>
+          <div class="input-group horizontal">
+            <input type="range" name="minRating" min="0" max="10" step="0.1"
+              value="{{ query.minRating | default('0') }}" class="filter-range" id="minRating"
+              oninput="updateRatingLabel()">
+            <input type="range" name="maxRating" min="0" max="10" step="0.1"
+              value="{{ query.maxRating | default('10') }}" class="filter-range" id="maxRating"
+              oninput="updateRatingLabel()">
+            <label id="ratingLabel">Rating: {{ query.minRating | default('0') }} - {{ query.maxRating | default('10')
+              }}</label>
           </div>
-          <input type="hidden" name="minRating" id="minRating" value="{{ query.minRating | default('') }}" />
-          <input type="hidden" name="maxRating" id="maxRating" value="{{ query.maxRating | default('') }}" />
+        </div>
+
+        <!-- Runtime Range -->
+        <div class="filter-group">
+          <h4>Select Runtime Range (minutes)</h4>
+          <div class="input-group horizontal">
+            <input type="range" name="minDuration" min="0" max="300" step="5"
+              value="{{ query.minDuration | default('0') }}" class="filter-range" id="minDuration"
+              oninput="updateDurationLabel()">
+            <input type="range" name="maxDuration" min="0" max="300" step="5"
+              value="{{ query.maxDuration | default('300') }}" class="filter-range" id="maxDuration"
+              oninput="updateDurationLabel()">
+            <label id="durationLabel">Duration: {{ query.minDuration | default('0') }} - {{ query.maxDuration |
+              default('300') }} min</label>
+          </div>
         </div>
 
         <!-- Other Attribute Inputs -->
@@ -214,8 +219,6 @@
           <div class="input-group horizontal">
             <input type="text" name="director" placeholder="Director Name" class="attribute-input"
               value="{{ query.director | default('') }}" />
-            <input type="text" name="cast" placeholder="Cast Member" class="attribute-input"
-              value="{{ query.cast | default('') }}" />
             <input type="text" name="country" placeholder="Country" class="attribute-input"
               value="{{ query.country | default('') }}" />
             <input type="text" name="language" placeholder="Language" class="attribute-input"
@@ -260,11 +263,28 @@
   </div>
 
   <script>
-    // Set the rating filters
-    function setRating(min, max) {
-      document.getElementById('minRating').value = min;
-      document.getElementById('maxRating').value = max;
+    // Update the label displaying the rating range
+    function updateRatingLabel() {
+      const minRating = document.getElementById('minRating').value;
+      const maxRating = document.getElementById('maxRating').value;
+      document.getElementById('ratingLabel').innerText = `Rating: ${minRating} - ${maxRating}`;
     }
+
+    // Update the label displaying the duration range
+    function updateDurationLabel() {
+      const minDuration = document.getElementById('minDuration').value;
+      const maxDuration = document.getElementById('maxDuration').value;
+      document.getElementById('durationLabel').innerText = `Duration: ${minDuration} - ${maxDuration} min`;
+    }
+
+    // Handle genre button selection
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', function () {
+        const checkbox = this.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        this.classList.toggle('selected');
+      });
+    });
   </script>
 </body>
 
