@@ -36,8 +36,8 @@ async function mainIndexHtml() {
     // Route for the home page with pagination
     app.get('/search', async (req, res) => {
       try {
-        const { title, genres, minYear, maxYear, minRating, maxRating, director, cast, country, language } = req.query;
-
+        const { title, genres, minYear, maxYear, minRating, maxRating, minDuration, maxDuration, director, cast, country, language } = req.query;
+    
         const filters = {
           title: title || undefined,
           genres: genres ? (Array.isArray(genres) ? genres : [genres]) : undefined,
@@ -45,27 +45,29 @@ async function mainIndexHtml() {
           maxYear: maxYear || undefined,
           minRating: minRating || undefined,
           maxRating: maxRating || undefined,
+          minDuration: minDuration || undefined,
+          maxDuration: maxDuration || undefined,
           director: director || undefined,
           cast: cast || undefined,
           country: country || undefined,
           language: language || undefined,
         };
-
+    
         const page = parseInt(req.query.page) || 1;
         const moviesPerPage = 100;
         const offset = (page - 1) * moviesPerPage;
-
+    
         const movieSearchResult = await articleModel.searchMovies(filters, offset, moviesPerPage);
         const totalMovies = await articleModel.countMovies(filters);
         const totalPages = Math.ceil(totalMovies / moviesPerPage);
-
+    
         res.send(nunjucks.render('index.html', { movieSearchResult, page, totalPages, query: req.query }));
       } catch (error) {
         console.error("Error fetching movies:", error);
         res.status(500).send("Internal Server Error");
       }
     });
-
+    
     // Redirect root path to /home
     app.get('/', (req, res) => {
       try {
@@ -198,29 +200,30 @@ async function mainIndexHtml() {
     app.post('/signup', upload.single('picture'), async (req, res) => {
       try {
         const { name, birth_year, favouriteFilters, picture } = req.body;
-
+    
+        console.log("Received genres:", favouriteFilters); // Debugging line
+    
         const filters = Array.isArray(favouriteFilters) ? favouriteFilters.join(',') : favouriteFilters;
-
+    
         const profileID = await articleModel.insertProfile({
           name,
           birthYear: birth_year,
           picture,
           favouriteFilters: filters
         });
-
+    
         if (!profileID) {
           throw new Error('Failed to generate profile ID');
         }
-
+    
         res.cookie('profileID', profileID, { maxAge: 10 * 365 * 24 * 60 * 60 * 1000, httpOnly: true });
-
         res.redirect('/getStarted');
       } catch (error) {
         console.error("Error creating profile:", error);
         res.status(500).send("Internal Server Error");
       }
     });
-
+    
     // Route to view profile page
     app.get('/viewProfile', async (req, res) => {
       try {

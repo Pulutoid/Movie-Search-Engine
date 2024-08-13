@@ -21,7 +21,7 @@
                 <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" class="movie-poster">
                 <div class="movie-info">
                     <h2>{{ movie.title }}</h2>
-                    <p>{{ movie.description | default("No description available.") }}</p>
+                    <p>{{ movie.fullplot }}</p>
                     <a href="/movie?id={{ movie.id }}" class="details-button">View Details</a>
                 </div>
             </div>

@@ -147,6 +147,16 @@ async function searchMovies(filters, offset = 0, limit = 100) {
     params.push(filters.maxRating);
   }
 
+  if (filters.minDuration) {
+    query += ` AND CAST(runtime AS INTEGER) >= ?`;
+    params.push(filters.minDuration);
+  }
+
+  if (filters.maxDuration) {
+    query += ` AND CAST(runtime AS INTEGER) <= ?`;
+    params.push(filters.maxDuration);
+  }
+
   if (filters.director) {
     query += ' AND director LIKE ?';
     params.push(`%${filters.director}%`);
@@ -215,6 +225,16 @@ async function countMovies(filters = {}) {
     params.push(filters.maxRating);
   }
 
+  if (filters.minDuration) {
+    query += ` AND CAST(runtime AS INTEGER) >= ?`;
+    params.push(filters.minDuration);
+  }
+
+  if (filters.maxDuration) {
+    query += ` AND CAST(runtime AS INTEGER) <= ?`;
+    params.push(filters.maxDuration);
+  }
+
   if (filters.director) {
     query += ' AND director LIKE ?';
     params.push(`%${filters.director}%`);
@@ -246,23 +266,6 @@ async function getMovieById(id) {
   const movie = await db.get(query, id);
   return movie;
 }
-async function insertProfile({ name, birthYear, picture, favouriteFilters }) {
-  const db = await openConnectionToDB();
-
-  let profileID;
-  let idExists = true;
-
-  while (idExists) {
-    profileID = generateRandomId();
-    idExists = await profileIdExists(db, profileID);
-  }
-
-  const query = `INSERT INTO profiles (profileID, name, birthYear, picture, favouriteFilters) VALUES (?, ?, ?, ?, ?)`;
-  await db.run(query, [profileID, name, birthYear, picture, favouriteFilters]);
-
-  return profileID;
-}
-
 
 module.exports = {
   openConnectionToDB,
@@ -276,5 +279,4 @@ module.exports = {
   addToFavorites,
   getMoviesByIds,
   getFavoriteMovies,
-  insertProfile
 };

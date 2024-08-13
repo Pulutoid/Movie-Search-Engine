@@ -41,6 +41,79 @@
     .filter-range {
       width: calc(100% - 1rem);
     }
+
+    /* Sidebar styles from home.html */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1D2C20;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .left-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, rgba(88.26, 126.53, 95.92, 0.70) 0%, rgba(17.11, 24.53, 18.60, 0.70) 100%);
+      width: 250px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .menu-logo {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .menu-logo img {
+      width: 150px;
+      height: auto;
+      transform: rotate(-10deg);
+    }
+
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .menu-item {
+      width: 100%;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 15px 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s;
+    }
+
+    .menu-item i {
+      margin-right: 10px;
+    }
+
+    .menu-item:hover {
+      background-color: #407342;
+      color: #B5F5C2;
+    }
+
+    .container {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    /* Adjustments to container padding to match the home page */
+    .container {
+      padding: 20px;
+    }
   </style>
 </head>
 
@@ -125,14 +198,27 @@
           </div>
         </div>
 
+        <!-- Runtime Range -->
+        <div class="filter-group">
+          <h4>Select Runtime Range (minutes)</h4>
+          <div class="input-group horizontal">
+            <input type="range" name="minDuration" min="0" max="300" step="5"
+              value="{{ query.minDuration | default('0') }}" class="filter-range" id="minDuration"
+              oninput="updateDurationLabel()">
+            <input type="range" name="maxDuration" min="0" max="300" step="5"
+              value="{{ query.maxDuration | default('300') }}" class="filter-range" id="maxDuration"
+              oninput="updateDurationLabel()">
+            <label id="durationLabel">Duration: {{ query.minDuration | default('0') }} - {{ query.maxDuration |
+              default('300') }} min</label>
+          </div>
+        </div>
+
         <!-- Other Attribute Inputs -->
         <div class="filter-group">
           <h4>Select Other Attributes</h4>
           <div class="input-group horizontal">
             <input type="text" name="director" placeholder="Director Name" class="attribute-input"
               value="{{ query.director | default('') }}" />
-            <input type="text" name="cast" placeholder="Cast Member" class="attribute-input"
-              value="{{ query.cast | default('') }}" />
             <input type="text" name="country" placeholder="Country" class="attribute-input"
               value="{{ query.country | default('') }}" />
             <input type="text" name="language" placeholder="Language" class="attribute-input"
@@ -182,6 +268,13 @@
       const minRating = document.getElementById('minRating').value;
       const maxRating = document.getElementById('maxRating').value;
       document.getElementById('ratingLabel').innerText = `Rating: ${minRating} - ${maxRating}`;
+    }
+
+    // Update the label displaying the duration range
+    function updateDurationLabel() {
+      const minDuration = document.getElementById('minDuration').value;
+      const maxDuration = document.getElementById('maxDuration').value;
+      document.getElementById('durationLabel').innerText = `Duration: ${minDuration} - ${maxDuration} min`;
     }
 
     // Handle genre button selection

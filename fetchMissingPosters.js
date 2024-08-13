@@ -6,44 +6,40 @@ async function openConnectionToDB() {
     return await articleModel.openConnectionToDB();
 }
 
-// Function to get all unique genres from the database
-async function getUniqueGenres() {
+// Function to update the runtime column by removing " min"
+async function updateRuntimeColumn() {
     const db = await openConnectionToDB();
 
-    // Query to get all genres from the MovRec_movie table
-    const rows = await db.all('SELECT genre FROM MovRec_movie');
+    try {
+        // Fetch all movies with runtime
+        const rows = await db.all('SELECT id, runtime FROM MovRec_movie');
+        const totalRows = rows.length;
 
-    // Set to store unique genres
-    const uniqueGenres = new Set();
+        console.log(`Total rows to update: ${totalRows}`);
 
-    // Iterate through each row and add genres to the set
-    rows.forEach(row => {
-        if (row.genre) {
-            const genresArray = row.genre.split(',').map(genre => genre.trim());
-            genresArray.forEach(genre => uniqueGenres.add(genre));
+        // Iterate through each row and update the runtime
+        let updatedCount = 0;
+        for (const row of rows) {
+            if (row.runtime) {
+                // Remove " min" and trim any spaces
+                const updatedRuntime = row.runtime.replace(' min', '').trim();
+
+                // Update the database with the new runtime value
+                await db.run('UPDATE MovRec_movie SET runtime = ? WHERE id = ?', [updatedRuntime, row.id]);
+                updatedCount++;
+                console.log(`Updated ${updatedCount}/${totalRows} rows.`);
+            }
         }
-    });
 
-    // Convert the set to an array and return it
-    return Array.from(uniqueGenres);
+        console.log('Runtime column has been successfully updated.');
+    } catch (error) {
+        console.error('Failed to update runtime column:', error.message);
+    } finally {
+        await db.close();
+    }
 }
 
-// Run the script to get unique genres
-getUniqueGenres().then(genres => {
-    console.log('Unique genres available in the database:');
-    console.log(genres);
-}).catch(error => {
-    console.error('Failed to retrieve unique genres:', error.message);
+// Run the script to update the runtime column
+updateRuntimeColumn().catch(error => {
+    console.error('Failed to execute the script:', error.message);
 });
-
-[
-    'Documentary', 'Short', 'Drama',
-    'Fantasy', 'Adventure', 'Action',
-    'Western', 'Horror', 'Animation',
-    'Comedy', 'Sci-Fi', 'Crime',
-    'History', 'Romance', 'Sport',
-    'War', 'Biography', 'Family',
-    'Thriller', 'Mystery', 'Music',
-    'Musical', 'Film-Noir', 'Adult',
-    'Talk-Show', 'News', 'Reality-TV'
-]
