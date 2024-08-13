@@ -7,6 +7,15 @@ body {
     padding: 0;
     display: flex;
     min-height: 100vh;
+    background-image: url(Background.png);
+
+    background-repeat: no-repeat;
+  
+    background-position: center;
+  
+    background-attachment: fixed;
+  
+    background-size: cover;
 }
 
 /* Main Layout */
