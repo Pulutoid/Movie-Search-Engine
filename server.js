@@ -80,7 +80,7 @@ async function mainIndexHtml() {
       try {
         const profileID = req.cookies.profileID;
         if (!profileID) {
-          return res.status(400).send("Bad Request: Profile ID is required");
+          return res.redirect('/switchProfile');
         }
 
         const profile = await articleModel.getProfileById(profileID);
@@ -226,7 +226,7 @@ async function mainIndexHtml() {
       try {
         const profileID = req.cookies.profileID;
         if (!profileID) {
-          return res.status(400).send("Bad Request: Profile ID is required");
+          return res.redirect('/switchProfile');
         }
 
         const profile = await articleModel.getProfileById(profileID);
@@ -246,7 +246,7 @@ async function mainIndexHtml() {
       try {
         const profileID = req.cookies.profileID;
         if (!profileID) {
-          return res.status(400).send("Bad Request: Profile ID is required");
+          return res.redirect('/switchProfile');
         }
 
         const favoriteMovies = await articleModel.getFavoriteMovies(profileID);
@@ -266,7 +266,7 @@ async function mainIndexHtml() {
       try {
         const profileID = req.cookies.profileID;
         if (!profileID) {
-          return res.status(400).send("Bad Request: Profile ID is required");
+          return res.redirect('/switchProfile');
         }
 
         const profile = await articleModel.getProfileById(profileID);
@@ -348,16 +348,17 @@ async function mainIndexHtml() {
       try {
         const profiles = await articleModel.getAllProfiles();
         if (!profiles || profiles.length === 0) {
-          return res.status(404).send("No profiles found");
+          // Redirect to the sign-up page if no profiles are found
+          return res.redirect('/signup');
         }
-
+    
         res.send(nunjucks.render('switchProfile.html', { profiles }));
       } catch (error) {
         console.error("Error fetching profiles:", error);
         res.status(500).send("Internal Server Error");
       }
     });
-
+    
     // POST route to handle profile switching
     app.post('/switchProfile', (req, res) => {
       try {
@@ -365,7 +366,7 @@ async function mainIndexHtml() {
         if (!profileID) {
           return res.status(400).send("Bad Request: Profile ID is required");
         }
-
+    
         res.cookie('profileID', profileID, { maxAge: 900000, httpOnly: true });
         res.redirect('/');
       } catch (error) {
@@ -373,7 +374,7 @@ async function mainIndexHtml() {
         res.status(500).send("Internal Server Error");
       }
     });
-
+    
     // Start the server and listen on port 3000
     app.listen(3000, () => {
       console.log('Server listening on port 3000');
