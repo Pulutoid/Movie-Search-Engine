@@ -3,96 +3,329 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="signUp.css">
     <title>Sign Up</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: #1D2C20;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Sign Up Container */
+        .signup-container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            background-color: #2b3a3b;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+        }
+
+        /* Left Side Styles */
+        .left-side {
+            flex: 1;
+            background-color: #2b3a3b;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 0.0625rem solid #ececec;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo h1 {
+            font-size: 2.25rem;
+            margin-top: 0.625rem;
+        }
+
+        .profile-picture {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-direction: column;
+        }
+
+        .profile-pic-container {
+            position: relative;
+            width: 6.25rem;
+            height: 6.25rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 0.125rem solid #ececec;
+            margin-bottom: 1rem;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic-selection {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 300px;
+        }
+
+        .profile-pic-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .profile-pic-option.selected {
+            border-color: #407342;
+        }
+
+        .signup-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .signup-form input {
+            padding: 0.625rem;
+            border-radius: 0.3125rem;
+            border: 0.0625rem solid #ececec;
+            background-color: #3c4c4d;
+            color: #ececec;
+            font-size: 1rem;
+        }
+
+        /* Right Side Styles */
+        .right-side {
+            flex: 1;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .right-side h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .genre-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.625rem;
+            justify-content: center;
+            margin-bottom: 1.875rem;
+        }
+
+        .genre-button {
+            background-color: #3c4a4b;
+            color: white;
+            padding: 0.625rem 1.25rem;
+            border-radius: 1.25rem;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .genre-button.selected {
+            background-color: #407342;
+        }
+
+        .signup-button {
+            background-color: #407342;
+            color: white;
+            padding: 0.9375rem 1.875rem;
+            border: none;
+            border-radius: 1.5625rem;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .signup-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .signup-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .left-side,
+            .right-side {
+                padding: 1.25rem;
+                border-right: none;
+                border-bottom: 0.0625rem solid #ececec;
+                flex: none;
+                width: 100%;
+            }
+
+            .right-side h2 {
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .profile-pic-container {
+                width: 5rem;
+                height: 5rem;
+            }
+
+            .signup-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .profile-pic-option {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="signup-container">
         <div class="left-side">
             <div class="logo">
+                <!-- Replace 'path_to_logo_image' with your actual logo image path -->
                 <img src="path_to_logo_image" alt="Movie Search Engine Logo" class="logo-image">
                 <h1>Sign Up</h1>
             </div>
             <div class="profile-picture">
                 <div class="profile-pic-container">
-                    <img src="path_to_profile_placeholder" alt="Profile Picture" class="profile-pic"
+                    <!-- Default avatar -->
+                    <img src="https://robohash.org/default" alt="Profile Picture" class="profile-pic"
                         id="profilePicPreview">
-                    <label for="profilePic" class="edit-icon">✏️ Edit</label>
-                    <input type="file" id="profilePic" name="picture" accept="image/*" style="display:none;">
+                </div>
+                <div class="profile-pic-selection" id="avatarSelection">
+                    <!-- Avatar options will be populated here -->
                 </div>
             </div>
-            <form class="signup-form" action="/signup" method="POST" enctype="multipart/form-data">
+            <form class="signup-form" action="/signup" method="POST">
+                <input type="hidden" name="picture" id="profilePicInput" value="https://robohash.org/default">
                 <input type="text" name="name" placeholder="Name" required>
-                <input type="text" name="birth_year" placeholder="Birth Year" required>
-                <div class="genre-selection">
-                    <h2>Movie Genre</h2>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Art"> Art
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="War"> War
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Crime"> Crime
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Comedy"> Comedy
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Family"> Family
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Action"> Action
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Animation"> Animation
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Drama"> Drama
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Horror"> Horror
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Adventure"> Adventure
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Musical"> Musical
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Romance"> Romance
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Mystery"> Mystery
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Fiction"> Fiction
-                    </label>
-                    <label class="genre-label">
-                        <input type="checkbox" name="favouriteFilters" value="Documentary"> Documentary
-                    </label>
-                </div>
+                <input type="number" name="birth_year" placeholder="Birth Year" required min="1900" max="2024">
                 <button type="submit" class="signup-button">Sign Up</button>
             </form>
+        </div>
+        <div class="right-side">
+            <h2>Select Your Favorite Movie Genres</h2>
+            <div class="genre-selection">
+                <!-- List of genres -->
+                <button type="button" class="genre-button" data-genre="Art">Art</button>
+                <button type="button" class="genre-button" data-genre="War">War</button>
+                <button type="button" class="genre-button" data-genre="Crime">Crime</button>
+                <button type="button" class="genre-button" data-genre="Comedy">Comedy</button>
+                <button type="button" class="genre-button" data-genre="Family">Family</button>
+                <button type="button" class="genre-button" data-genre="Action">Action</button>
+                <button type="button" class="genre-button" data-genre="Animation">Animation</button>
+                <button type="button" class="genre-button" data-genre="Drama">Drama</button>
+                <button type="button" class="genre-button" data-genre="Horror">Horror</button>
+                <button type="button" class="genre-button" data-genre="Adventure">Adventure</button>
+                <button type="button" class="genre-button" data-genre="Musical">Musical</button>
+                <button type="button" class="genre-button" data-genre="Romance">Romance</button>
+                <button type="button" class="genre-button" data-genre="Mystery">Mystery</button>
+                <button type="button" class="genre-button" data-genre="Fiction">Fiction</button>
+                <button type="button" class="genre-button" data-genre="Documentary">Documentary</button>
+            </div>
+            <input type="hidden" name="favouriteFilters" id="favouriteFilters">
         </div>
     </div>
 
     <script>
-        // Preview selected profile picture
-        const profilePicInput = document.getElementById('profilePic');
+        // Generate random avatars using the RoboHash API
+        const avatarSelection = document.getElementById('avatarSelection');
         const profilePicPreview = document.getElementById('profilePicPreview');
+        const profilePicInput = document.getElementById('profilePicInput');
 
-        profilePicInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    profilePicPreview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+        // Function to generate a random string for avatar seed
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
             }
+            return result;
+        }
+
+        // Populate avatar options
+        for (let i = 0; i < 8; i++) { // Display 8 avatar options
+            const randomSeed = generateRandomString(10);
+            const avatarURL = `https://robohash.org/${randomSeed}`;
+
+            const img = document.createElement('img');
+            img.src = avatarURL;
+            img.classList.add('profile-pic-option');
+            img.dataset.src = avatarURL;
+
+            // Set first avatar as selected by default
+            if (i === 0) {
+                img.classList.add('selected');
+                profilePicPreview.src = avatarURL;
+                profilePicInput.value = avatarURL;
+            }
+
+            avatarSelection.appendChild(img);
+        }
+
+        // Handle avatar selection
+        avatarSelection.addEventListener('click', function (e) {
+            if (e.target && e.target.matches('img.profile-pic-option')) {
+                // Remove 'selected' class from all options
+                document.querySelectorAll('.profile-pic-option').forEach(img => img.classList.remove('selected'));
+                // Add 'selected' class to clicked option
+                e.target.classList.add('selected');
+                // Update preview and hidden input
+                profilePicPreview.src = e.target.dataset.src;
+                profilePicInput.value = e.target.dataset.src;
+            }
+        });
+
+        // Handle genre selection
+        const genreButtons = document.querySelectorAll('.genre-button');
+        const favouriteFiltersInput = document.getElementById('favouriteFilters');
+        const selectedGenres = new Set();
+
+        genreButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const genre = this.getAttribute('data-genre');
+                if (selectedGenres.has(genre)) {
+                    selectedGenres.delete(genre);
+                    this.classList.remove('selected');
+                } else {
+                    selectedGenres.add(genre);
+                    this.classList.add('selected');
+                }
+                favouriteFiltersInput.value = Array.from(selectedGenres).join(',');
+            });
         });
     </script>
 </body>

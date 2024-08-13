@@ -70,42 +70,96 @@ async function mainIndexHtml() {
     res.redirect('/home');
   });
 
-  // New route for the homepage
   app.get('/home', async (req, res) => {
     try {
-      const profileID = req.cookies.profileID;
+        const profileID = req.cookies.profileID;
+        
+        // Fetch the user's profile
+        const profile = await articleModel.getProfileById(profileID);
 
-      // Fetch favorite movies
-      let favoriteMovies = await articleModel.getFavoriteMovies(profileID);
-
-      // Pick up to five random movies from favorites
-      let featuredMovies = [];
-      if (favoriteMovies.length > 0) {
-        while (featuredMovies.length < 5 && favoriteMovies.length > 0) {
-          const randomIndex = Math.floor(Math.random() * favoriteMovies.length);
-          featuredMovies.push(favoriteMovies.splice(randomIndex, 1)[0]);
+        if (!profile) {
+            throw new Error("Profile not found");
         }
-      }
 
-      // Fetch all movies
-      const allMovies = await articleModel.searchMovies({}, 0, 1000); // Fetch a large number to have enough for randomness
+        const { birthYear, favouriteFilters } = profile;
+        let filters = [];
+        let movieSearchFilters = {};
 
-      // Pick 5 random movies from the entire collection
-      let recommendedMovies = [];
-      if (allMovies.length > 0) {
-        while (recommendedMovies.length < 5 && allMovies.length > 0) {
-          const randomIndex = Math.floor(Math.random() * allMovies.length);
-          recommendedMovies.push(allMovies.splice(randomIndex, 1)[0]);
+        // Try to determine user's age
+        let age;
+        try {
+            const currentYear = new Date().getFullYear();
+            age = birthYear ? currentYear - birthYear : null;
+        } catch (error) {
+            console.error("Error calculating age:", error);
+            age = null; // Fallback if birthYear is not available
         }
-      }
 
-      // Render the home.html template with the movies
-      res.send(nunjucks.render('home.html', { featuredMovies, recommendedMovies }));
+        // Check if favouriteFilters is a string and split it, or if it's already an array, use it directly
+        if (favouriteFilters && typeof favouriteFilters === 'string') {
+            filters = favouriteFilters.split(',');
+        } else if (Array.isArray(favouriteFilters)) {
+            filters = favouriteFilters;
+        }
+
+        // If age is available, search for movies based on age range
+        if (age) {
+            movieSearchFilters.minYear = new Date().getFullYear() - (age + 20);
+            movieSearchFilters.maxYear = new Date().getFullYear() - (age - 20);
+        }
+
+        // Add genres to the search filters if available
+        if (filters.length > 0) {
+            movieSearchFilters.genres = filters;
+        }
+
+        // Fetch favorite movies
+        let favoriteMovies = await articleModel.getFavoriteMovies(profileID);
+
+        // Pick up to five random movies from favorites
+        let featuredMovies = [];
+        if (favoriteMovies.length > 0) {
+            while (featuredMovies.length < 5 && favoriteMovies.length > 0) {
+                const randomIndex = Math.floor(Math.random() * favoriteMovies.length);
+                featuredMovies.push(favoriteMovies.splice(randomIndex, 1)[0]);
+            }
+        }
+
+        // Fetch all movies based on the filters, or randomly if no filters/age
+        let allMovies;
+        if (Object.keys(movieSearchFilters).length > 0) {
+            allMovies = await articleModel.searchMovies(movieSearchFilters, 0, 1000);
+        } else {
+            allMovies = await articleModel.searchMovies({}, 0, 1000); // Fetch all movies randomly
+        }
+
+        // Pick 5 random movies from the filtered or full collection
+        let recommendedMovies = [];
+        if (allMovies.length > 0) {
+            while (recommendedMovies.length < 5 && allMovies.length > 0) {
+                const randomIndex = Math.floor(Math.random() * allMovies.length);
+                recommendedMovies.push(allMovies.splice(randomIndex, 1)[0]);
+            }
+        }
+
+        // Render the home.html template with the movies
+        res.send(nunjucks.render('home.html', { featuredMovies, recommendedMovies }));
     } catch (error) {
-      console.error("Error fetching homepage movies:", error);
-      res.status(500).send("Internal Server Error");
+        console.error("Error fetching homepage movies:", error);
+        res.status(500).send("Internal Server Error");
     }
-  });
+});
+
+
+// Route for the Get Started page
+app.get('/getStarted', (req, res) => {
+  try {
+    res.send(nunjucks.render('getStarted.html'));
+  } catch (error) {
+    console.error("Error rendering Get Started page:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
   // Route for the movie details page
   app.get('/movie', async (req, res) => {
@@ -128,38 +182,46 @@ async function mainIndexHtml() {
     }
   });
 
-  // Route for the sign-up page
-  app.get('/signup', (req, res) => {
-    try {
-      res.send(nunjucks.render('signup.html'));
-    } catch (error) {
-      console.error("Error rendering signup page:", error);
-      res.status(500).send("Internal Server Error");
+// Route for the sign-up page
+app.get('/signup', (req, res) => {
+  try {
+    res.send(nunjucks.render('signup.html'));
+  } catch (error) {
+    console.error("Error rendering signup page:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// POST route to handle sign-up form submission
+app.post('/signup', upload.single('picture'), async (req, res) => {
+  try {
+    const { name, birth_year, favouriteFilters, picture } = req.body;
+
+    // Prepare filters and picture for saving
+    const filters = Array.isArray(favouriteFilters) ? favouriteFilters.join(',') : favouriteFilters;
+    
+    // Save the profile using the articleModel
+    const profileID = await articleModel.insertProfile({
+      name, 
+      birthYear: birth_year, 
+      picture, // Save the profile picture URL
+      favouriteFilters: filters
+    });
+
+    if (!profileID) {
+      throw new Error('Failed to generate profile ID');
     }
-  });
 
-  // POST route to handle sign-up form submission
-  app.post('/signup', upload.single('picture'), async (req, res) => {
-    try {
-      const { name, birth_year, favouriteFilters } = req.body;
-      const picture = req.file ? `/uploads/${req.file.filename}` : null;
+    // Set the profileID in a cookie
+    res.cookie('profileID', profileID, { maxAge: 10 * 365 * 24 * 60 * 60 * 1000, httpOnly: true });
 
-      const filters = Array.isArray(favouriteFilters) ? favouriteFilters.join(',') : favouriteFilters;
-
-      const profileID = await articleModel.insertProfile({ name, birthYear: birth_year, picture, favouriteFilters: filters });
-
-      if (!profileID) {
-        throw new Error('Failed to generate profile ID');
-      }
-
-      res.cookie('profileID', profileID, { maxAge: 10 * 365 * 24 * 60 * 60 * 1000, httpOnly: true });
-
-      res.send("Profile created successfully!");
-    } catch (error) {
-      console.error("Error creating profile:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
+    // Redirect to the Get Started page after successful sign-up
+    res.redirect('/getStarted');
+  } catch (error) {
+    console.error("Error creating profile:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
   // Route to view profile page
   app.get('/viewProfile', async (req, res) => {
@@ -168,19 +230,21 @@ async function mainIndexHtml() {
       if (!profileID) {
         return res.status(400).send("Bad Request: Profile ID is required");
       }
-
+  
       const profile = await articleModel.getProfileById(profileID);
-
+  
       if (!profile) {
         return res.status(404).send("Profile not found");
       }
-
+  
+      // Render the viewProfile.html template, passing the profile data including the picture
       res.send(nunjucks.render('viewProfile.html', { profile }));
     } catch (error) {
       console.error("Error fetching profile details:", error);
       res.status(500).send("Internal Server Error");
     }
   });
+  
 
   // Route for the favorites page
   app.get('/favorites', async (req, res) => {
@@ -278,17 +342,19 @@ async function mainIndexHtml() {
   app.get('/switchProfile', async (req, res) => {
     try {
       const profiles = await articleModel.getAllProfiles();
-
+  
       if (!profiles || profiles.length === 0) {
         return res.status(404).send("No profiles found");
       }
-
+  
+      // Render the switchProfile.html template, passing the list of profiles including their pictures
       res.send(nunjucks.render('switchProfile.html', { profiles }));
     } catch (error) {
       console.error("Error fetching profiles:", error);
       res.status(500).send("Internal Server Error");
     }
   });
+  
 
   // POST route to handle profile switching
   app.post('/switchProfile', (req, res) => {

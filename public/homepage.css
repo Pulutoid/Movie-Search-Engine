@@ -146,20 +146,23 @@ body {
 
 .circle-bg {
     fill: none;
-    stroke: #4caf50;
+    stroke: #479012;
     stroke-width: 0.2vw;
 }
 
 .circle {
+    margin-top: 30px;
     fill: none;
     stroke-width: 0.25vw;
     stroke-linecap: round;
-    stroke: #ececec;
+    stroke: #bdcdb8;
     transition: stroke-dasharray 0.3s ease;
 }
 
 .rating-number {
     fill: #ececec;
+    padding-top: 20px;
+    margin-top: 20px;
     font-size: 0.75vw;
     text-anchor: middle;
     font-weight: bold;
@@ -188,6 +191,7 @@ h2 {
 .detail-item {
     background-color: #3c4a4b;
     padding: 0.5vw 1vw;
+    margin-top: 10px;
     border-radius: 0.5vw;
     font-size: 1vw;
     color: #bbbbbb;
