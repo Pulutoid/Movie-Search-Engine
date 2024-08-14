@@ -107,7 +107,7 @@ async function getFavoriteMovies(profileID) {
   return getMoviesByIds(movieIds);
 }
 
-// Function to search for movies with filters and pagination
+// Function to search for movies with filters and pagination (AND operator)
 async function searchMovies(filters, offset = 0, limit = 100) {
   const db = await openConnectionToDB();
 
@@ -148,12 +148,12 @@ async function searchMovies(filters, offset = 0, limit = 100) {
   }
 
   if (filters.minDuration) {
-    query += ` AND CAST(runtime AS INTEGER) >= ?`;
+    query += ' AND runtime >= ?';
     params.push(filters.minDuration);
   }
 
   if (filters.maxDuration) {
-    query += ` AND CAST(runtime AS INTEGER) <= ?`;
+    query += ' AND runtime <= ?';
     params.push(filters.maxDuration);
   }
 
@@ -185,7 +185,84 @@ async function searchMovies(filters, offset = 0, limit = 100) {
   return movieSearchResult;
 }
 
-// Function to count total number of movies matching the filters
+// Function to search for movies with filters and pagination (OR operator)
+async function searchMoviesOR(filters, offset = 0, limit = 100) {
+  const db = await openConnectionToDB();
+
+  let query = 'SELECT * FROM MovRec_movie WHERE 1=1';
+  let params = [];
+
+  if (filters.title) {
+    query += ' AND title LIKE ?';
+    params.push(`%${filters.title}%`);
+  }
+
+  if (filters.genres) {
+    const genres = Array.isArray(filters.genres) ? filters.genres : [filters.genres];
+    const genreClauses = genres.map(() => 'genre LIKE ?').join(' OR ');
+    query += ` AND (${genreClauses})`;
+    genres.forEach((genre) => params.push(`%${genre}%`));
+  }
+
+  if (filters.minYear) {
+    query += ' AND year >= ?';
+    params.push(filters.minYear);
+  }
+
+  if (filters.maxYear) {
+    query += ' AND year <= ?';
+    params.push(filters.maxYear);
+  }
+
+  if (filters.minRating) {
+    query += ' AND imdbrating >= ?';
+    params.push(filters.minRating);
+  }
+
+  if (filters.maxRating) {
+    query += ' AND imdbrating <= ?';
+    params.push(filters.maxRating);
+  }
+
+  if (filters.minDuration) {
+    query += ' AND runtime >= ?';
+    params.push(filters.minDuration);
+  }
+
+  if (filters.maxDuration) {
+    query += ' AND runtime <= ?';
+    params.push(filters.maxDuration);
+  }
+
+  if (filters.director) {
+    query += ' AND director LIKE ?';
+    params.push(`%${filters.director}%`);
+  }
+
+  if (filters.cast) {
+    query += ' AND cast LIKE ?';
+    params.push(`%${filters.cast}%`);
+  }
+
+  if (filters.country) {
+    query += ' AND country LIKE ?';
+    params.push(`%${filters.country}%`);
+  }
+
+  if (filters.language) {
+    query += ' AND language LIKE ?';
+    params.push(`%${filters.language}%`);
+  }
+
+  query += ' LIMIT ? OFFSET ?';
+  params.push(limit, offset);
+
+  const movieSearchResult = await db.all(query, params);
+
+  return movieSearchResult;
+}
+
+// Function to count total number of movies matching the filters (AND operator)
 async function countMovies(filters = {}) {
   const db = await openConnectionToDB();
 
@@ -226,12 +303,85 @@ async function countMovies(filters = {}) {
   }
 
   if (filters.minDuration) {
-    query += ` AND CAST(runtime AS INTEGER) >= ?`;
+    query += ' AND runtime >= ?';
     params.push(filters.minDuration);
   }
 
   if (filters.maxDuration) {
-    query += ` AND CAST(runtime AS INTEGER) <= ?`;
+    query += ' AND runtime <= ?';
+    params.push(filters.maxDuration);
+  }
+
+  if (filters.director) {
+    query += ' AND director LIKE ?';
+    params.push(`%${filters.director}%`);
+  }
+
+  if (filters.cast) {
+    query += ' AND cast LIKE ?';
+    params.push(`%${filters.cast}%`);
+  }
+
+  if (filters.country) {
+    query += ' AND country LIKE ?';
+    params.push(`%${filters.country}%`);
+  }
+
+  if (filters.language) {
+    query += ' AND language LIKE ?';
+    params.push(`%${filters.language}%`);
+  }
+
+  const row = await db.get(query, params);
+  return row.count;
+}
+
+// Function to count total number of movies matching the filters (OR operator)
+async function countMoviesOR(filters = {}) {
+  const db = await openConnectionToDB();
+
+  let query = 'SELECT COUNT(*) as count FROM MovRec_movie WHERE 1=1';
+  let params = [];
+
+  if (filters.title) {
+    query += ' AND title LIKE ?';
+    params.push(`%${filters.title}%`);
+  }
+
+  if (filters.genres) {
+    const genres = Array.isArray(filters.genres) ? filters.genres : [filters.genres];
+    const genreClauses = genres.map(() => 'genre LIKE ?').join(' OR ');
+    query += ` AND (${genreClauses})`;
+    genres.forEach((genre) => params.push(`%${genre}%`));
+  }
+
+  if (filters.minYear) {
+    query += ' AND year >= ?';
+    params.push(filters.minYear);
+  }
+
+  if (filters.maxYear) {
+    query += ' AND year <= ?';
+    params.push(filters.maxYear);
+  }
+
+  if (filters.minRating) {
+    query += ' AND imdbrating >= ?';
+    params.push(filters.minRating);
+  }
+
+  if (filters.maxRating) {
+    query += ' AND imdbrating <= ?';
+    params.push(filters.maxRating);
+  }
+
+  if (filters.minDuration) {
+    query += ' AND runtime >= ?';
+    params.push(filters.minDuration);
+  }
+
+  if (filters.maxDuration) {
+    query += ' AND runtime <= ?';
     params.push(filters.maxDuration);
   }
 
@@ -271,7 +421,9 @@ module.exports = {
   openConnectionToDB,
   insertProfile,
   searchMovies,
+  searchMoviesOR,
   countMovies,
+  countMoviesOR,
   getMovieById,
   getProfileById,
   updateProfile,

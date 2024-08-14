@@ -135,9 +135,9 @@ async function mainIndexHtml() {
         // Fetch all movies based on the filters, or randomly if no filters/age
         let allMovies;
         if (Object.keys(movieSearchFilters).length > 0) {
-          allMovies = await articleModel.searchMovies(movieSearchFilters, 0, 1000);
+          allMovies = await articleModel.searchMoviesOR(movieSearchFilters, 0, 1000);
         } else {
-          allMovies = await articleModel.searchMovies({}, 0, 1000); // Fetch all movies randomly
+          allMovies = await articleModel.searchMoviesOR({}, 0, 1000); // Fetch all movies randomly
         }
 
         // Pick 5 random movies from the filtered or full collection
